@@ -33,7 +33,7 @@ namespace ConsoleApp1
             Console.ReadKey();
         }
 
-        private static void PromoteEmployee(object m)
+        private static void PromoteEmployee(Employee m)
         {
             // В этом месте компилятор не знает точно, на какой тип объекта
             // ссылается o, поэтому скомпилирует этот код
@@ -41,7 +41,7 @@ namespace ConsoleApp1
             // ссылается объект o (приведение типа выполняется каждый раз),
             // и проверяет, соответствует ли тип объекта типу Employee
             // или другому типу, производному от Employee
-            Employee e = (Manager)m;
+             Employee e = (Manager)m;
         }
     }
 }
