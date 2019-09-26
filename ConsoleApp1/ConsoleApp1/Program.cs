@@ -7,17 +7,41 @@ namespace ConsoleApp1
     {
     }
 
+    internal class Manager : Employee
+    {
+
+    }
     public sealed class Program
     {
         public static void Main()
         {
-            // Приведение типа не требуется, т. к. new возвращает объект Employee,
-            // а Object — это базовый тип для Employee.
-            Object o = new Employee();
-            // Приведение типа обязательно, т. к. Employee — производный от Object
-            // В других языках (таких как Visual Basic) компилятор не потребует
-            // явного приведения
-            Employee e = (Employee)o;
+            //Создаем объект Manager и передаем его в PromoteEmployee
+            // Manager ЯВЛЯЕТСЯ производным от Employee,
+            // поэтому PromoteEmployee работает
+
+            Manager m = new Manager();
+            PromoteEmployee(m);
+
+            // Создаем объект DateTime и передаем его в PromoteEmployee
+            // DateTime НЕ ЯВЛЯЕТСЯ производным от Employee,
+            // поэтому PromoteEmployee выбрасывает
+            // исключение System.InvalidCastException
+            DateTime newYears = new DateTime(2013, 1, 1);
+
+            PromoteEmployee(newYears);
+
+            Console.ReadKey();
+        }
+
+        private static void PromoteEmployee(object m)
+        {
+            // В этом месте компилятор не знает точно, на какой тип объекта
+            // ссылается o, поэтому скомпилирует этот код
+            // Однако в период выполнения CLR знает, на какой тип
+            // ссылается объект o (приведение типа выполняется каждый раз),
+            // и проверяет, соответствует ли тип объекта типу Employee
+            // или другому типу, производному от Employee
+            Employee e = (Manager)m;
         }
     }
 }
