@@ -1,8 +1,13 @@
 ﻿using System;
 
-internal struct Point
+// Интерфейс, определяющий метод Change
+internal interface IChangeBoxedPoint
 {
-    private Int32 m_x,m_y;
+    void Change(Int32 x, Int32 y);
+}
+internal struct Point : IChangeBoxedPoint
+{
+    private Int32 m_x, m_y;
       
     public Point (Int32 x, Int32 y)
     {
@@ -32,6 +37,12 @@ public sealed class Program
         Object o = p;
         Console.WriteLine(o);
         ((Point)o).Change(3, 3);
+        Console.WriteLine(o);
+        // p упаковывается, упакованный объект изменяется и освобождается
+        ((IChangeBoxedPoint)p).Change(5, 5);
+        Console.WriteLine(p);
+        // Упакованный объект изменяется и выводится
+        ((IChangeBoxedPoint)o).Change(6, 6);
         Console.WriteLine(o);
         Console.ReadKey();
     }
