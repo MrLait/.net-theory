@@ -1,68 +1,70 @@
 ﻿using System;
-using System.Collections;
 
-struct Point
+internal struct Point : IComparable
 {
-    public Int32 x, y;
+    private Int32 m_x, m_y;
+
+    public Point(Int32 x, Int32 y)
+    {
+        m_x = x;
+        m_y = y;
+    }
+    //Переопределяем метод ToString, унаследованный от System.ValueType
+    public override string ToString()
+    {
+        //Возвразаем Point как строку (вызов ToString предотвращает упаковку)
+        return String.Format("{0}, {1}", m_x.ToString(), m_y.ToString());
+    }
+
+    public Int32 CompareTo(Point other)
+    {
+        // Используем теорему Пифагора для определения точки,
+        // наиболее удаленной от начала координат (0, 0)
+        return Math.Sign(Math.Sqrt(m_x * m_x + m_y * m_y)
+            - Math.Sqrt(other.m_x * other.m_x + other.m_y * other.m_y));
+    }
+    //реализация метода CompareTo интерфейса ICompareble
+    public Int32 CompareTo(Object o)
+    {
+        if (GetType() != o.GetType())
+        {
+            throw new ArgumentException("o is not a Point");
+        }
+        // Вызов безопасного в отношении типов метода CompareTo
+        return CompareTo((Point)o);
+    }
 }
+
 public sealed class Program
 {
     public static void Main()
     {
-        ArrayList a = new ArrayList();
-        Point p; //Выделяем память для поинт(не в куче)
-        for (Int32 i = 0; i < 10; i++)
-        {
-            p.x = p.y = i; //Инициализация членов в нашей значимом типе
-            a.Add(p); //Упаковка значимого типа и добавление ссылки в ArrayList
-        }
-        Point p1 = (Point)a[0];
-
-        Int32 x = 5;
-        Object o = x; // Упаковка x; o указывает на упакованный объект
-        Int16 y = (Int16)(Int32)o; // Распаковка к Int32, а затем приведение типа к Int16
-
-        Point p2;
-        p2.x = p2.y = 1;
-        Object o2 = p2; // Упаковка p2; o2 указывает на упакованный объект
-        p2 = (Point)o2; // Распаковка o2 и копирование полей из экземпляра в стек
-
-        Point p3;
-        p3.x = p3.y = 1;
-        Object o3 = p3; // Упаковка p3; o3 указывает на упакованный экземпляр
-                        // Изменение поля x структуры Point (присвоение числа 1).
-        p3 = (Point)o3; // Распаковка o и копирование полей из экземпляра
-                        // в переменную в стеке
-        p3.x = 2; // Изменение состояния переменной в стеке
-        o3 = p3; // Упаковка p; o ссылается на новый упакованный экземпляр
-
-        Int32 v = 5; // Создание неупакованной переменной значимого типа o
-        Object o4 = v; // указывает на упакованное Int32, содержащее 5
-        v = 123; // Изменяем неупакованное значение на 123
-        Console.WriteLine(v + ", " + (Int32)o); // Отображается "123, 5"
-        Console.WriteLine(v + ", " + o);
-        //Предыдущий код можно улучшить, изменив вызов метода WriteLine:
-        Console.WriteLine(v.ToString() + ", " + o); // Отображается "123, 5"
-
-        Int32 v5 = 5; // Создаем неупакованную переменную значимого типа
-        Object o5 = v5; // o указывает на упакованную версию v
-        v5 = 123; // Изменяет неупакованный значимый тип на 123
-        Console.WriteLine(v5); // Отображает "123"
-        v5 = (Int32)o5; // Распаковывает и копирует o в v
-        Console.WriteLine(v5); // Отображает "5"
-
-        Int32 v6 = 10; // Создаем переменную упакованного значимого типа
-                       // При компиляции следующей строки v6 упакуется
-                       // три раза, расходуя и время, и память
-        Console.WriteLine("{0}, {1}, {2}", v6, v6, v6);
-        // Следующие строки дают тот же результат,
-        // но выполняются намного быстрее и расходуют меньше памяти
-        v6 = 6;
-        Object o6 = v6; // Упакуем вручную v (только единожды)
-                        // При компиляции следующей строки код упаковки не создается
-        Console.WriteLine("{0}, {1}, {2}", o6, o6, o6);
-
-
+        // Создаем в стеке два экземпляра Point
+        Point p1 = new Point(10, 10);
+        Point p2 = new Point(20, 20);
+        // p1 НЕ пакуется для вызова ToString (виртуальный метод)
+        Console.WriteLine(p1.ToString()); // "(10, 10)"
+        // p1 ПАКУЕТСЯ для вызова GetType (невиртуальный метод)
+        Console.WriteLine(p1.GetType()); // "Point"
+        // p1 НЕ пакуется для вызова CompareTo
+        // p2 НЕ пакуется, потому что вызван CompareTo(Point)
+        Console.WriteLine(p1.CompareTo(p2)); // "-1" 
+        // p1 пакуется, а ссылка размещается в c
+        IComparable c = p1; 
+        Console.WriteLine(c.GetType()); // "Point" 
+        // p1 НЕ пакуется для вызова CompareTo
+        // Поскольку в CompareTo не передается переменная Point,
+        // вызывается CompareTo(Object), которому нужна ссылка
+        // на упакованный Point
+        // c НЕ пакуется, потому что уже ссылается на упакованный Point
+        Console.WriteLine(p1.CompareTo(c)); // "0"
+        // c НЕ пакуется, потому что уже ссылается на упакованный Point
+        // p2 ПАКУЕТСЯ, потому что вызывается CompareTo(Object)
+        Console.WriteLine(c.CompareTo(p2)); //"-1"
+        // c пакуется, а поля копируются в p2
+        p2 = (Point)c;
+        // Убеждаемся, что поля скопированы в p2
+        Console.WriteLine(p2.ToString());// "(10, 10)"
         Console.ReadKey();
     }
 }
