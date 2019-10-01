@@ -1,49 +1,41 @@
 ﻿using System;
 
-// Интерфейс, определяющий метод Change
-internal interface IChangeBoxedPoint
-{
-    void Change(Int32 x, Int32 y);
-}
-internal struct Point : IChangeBoxedPoint
-{
-    private Int32 m_x, m_y;
-      
-    public Point (Int32 x, Int32 y)
-    {
-        m_x = x;
-        m_y = y;
-    }
+//Открытый тип доступен из любой сборки
+public class ThisIsPublicType { }
+//Внутренний тип доступен только из собственной сборки
+internal class ThisIsAnInternalType { }
+//Это внетренний тип т.к модификатор доступа не указан явно
+class ThisIsAlsoAnInternalType { }
 
-    public void Change(Int32 x, Int32 y)
-    {
-        m_x = x;
-        m_y = y;
-    }
-    public override String ToString()
-    {
-        return String.Format("{0}, {1}", m_x.ToString(), m_y.ToString());
-    }
-}
-
-public sealed class Program
+public sealed class SomeType
 {
-    public static void Main()
+    //Вложенный класс
+    private class SomeNestedType { };
+    // Константа, неизменяемое и статическое изменяемое поле
+    // Constant, readonly, and static read/write field
+    private const Int32 c_SomeConstant = 1;
+    private readonly String m_SomeReadOnlyField = "2";
+    private static Int32 s_SomeReadWriteField = 3;
+    //Конструктор типа
+    static SomeType() { }
+    //Конструкторы экземпляров
+    public SomeType(Int32 x) { }
+    public SomeType() { }
+    //экземплярный и статический методы
+    private String InstanceMethod() { return null; }
+    public static void Main() { }
+    //Необобщенное экземплярное свойство
+    public Int32 SomeProp
     {
-        Point p = new Point(1, 1);
-        Console.WriteLine(p);
-        p.Change(2, 2);
-        Console.WriteLine(p);
-        Object o = p;
-        Console.WriteLine(o);
-        ((Point)o).Change(3, 3);
-        Console.WriteLine(o);
-        // p упаковывается, упакованный объект изменяется и освобождается
-        ((IChangeBoxedPoint)p).Change(5, 5);
-        Console.WriteLine(p);
-        // Упакованный объект изменяется и выводится
-        ((IChangeBoxedPoint)o).Change(6, 6);
-        Console.WriteLine(o);
-        Console.ReadKey();
+        get { return 0; }
+        set { }
     }
+    //Обобщенное экземплярное свойство
+    public Int32 this[String s]
+    {
+        get { return 0; }
+        set { }
+    }
+    //Экземплярное событие
+    public event EventHandler SomeEvent;
 }
