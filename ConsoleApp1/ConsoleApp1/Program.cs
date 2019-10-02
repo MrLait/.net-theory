@@ -1,26 +1,57 @@
-﻿using System;
-public sealed class Program
+﻿using CompanyA;
+using CompanyB;
+using System;
+
+namespace CompanyA
 {
-    public sealed class Point
+    public class Phone
     {
-        private Int32 m_x, m_y;
-        public Point(Int32 x, Int32 y)
+        public void Dial()
         {
-            m_x = x;
-            m_y = y;
+            Console.WriteLine("Phone.Dial");
+            //Выполнить действия по набору номера
         }
-        public override string ToString()
-        {
-            return String.Format("{0},{1}", m_x, m_y);
-        }
-    }
-    public static void Main()
-    {
-        Point p = new Point(3, 4);
-        // Компилятор C# вставит здесь инструкцию callvirt,
-        // но JIT-компилятор оптимизирует этот вызов и сгенерирует код
-        // для невиртуального вызова ToString,
-        // поскольку p имеет тип Point, являющийся запечатанным
-        Console.WriteLine(p);
     }
 }
+//А теперь представьте, что в компании CompanyB спроектировали другой тип,
+//BetterPhone, использующий тип Phone в качестве базового:
+namespace CompanyB
+{
+    public class BetterPhone : Phone
+    {
+        //Предупреждение CS0108	'"BetterPhone.Dial()"
+        //скрывает наследуемый член "Phone.Dial()".
+        public void Dial() 
+
+        {
+            Console.WriteLine("BetterPhone.Dial");
+            EstablishConnection();
+            base.Dial();
+        }
+        protected virtual void EstablishConnection()
+        {
+            Console.WriteLine("BetterPhone.EstablishConnection");
+            // Выполнить действия по набору телефонного номера
+        }
+    }
+}
+
+public sealed class Programm
+{
+    public static void Main()
+    {
+        Phone p1 = new Phone();
+        p1.Dial();
+        BetterPhone p2 = new BetterPhone();
+        p2.Dial();
+        Console.ReadKey();
+    }
+}
+
+//Предупреждение CS0108: //'"BetterPhone.Dial()" скрывает наследуемый член "Phone.Dial()". 
+                        //Если скрытие было намеренным, используйте ключевое слово new.	
+
+
+//warning CS0108: //'CompanyB.BetterPhone.Dial()' hides inherited member
+                 // 'CompanyA.Phone.Dial()'. Use the new keyword if hiding
+                //   was intended.
