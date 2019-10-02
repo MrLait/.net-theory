@@ -2,14 +2,18 @@
 
 public sealed class Programm
 {
-    public sealed class SomeType
+    public sealed class SomeLibraryType
     {
-        // Некоторые типы не являются элементарными, но С# допускает существование
-        // константных переменных этих типов после присваивания значения null
-        public const SomeType Empty = null;
+        // ПРИМЕЧАНИЕ: C# не позволяет использовать для констант модификатор
+        // static, поскольку всегда подразумевается, что константы являются
+        // статическими
+        public const Int32 MaxEntriesInList = 50;
     }
-        public static void Main()
-        {
-            Console.ReadKey();
-        }
+    public static void Main()
+    {
+        Console.WriteLine("Max entries supported in list: "
+        + SomeLibraryType.MaxEntriesInList);
+        
+        Console.ReadKey();
     }
+}
