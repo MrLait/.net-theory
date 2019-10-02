@@ -2,35 +2,36 @@
 
 public sealed class Programm
 {
-    public sealed class SomeType
+    public sealed class AType
     {
-        // Статическое неизменяемое поле. Его значение рассчитывается
-        // и сохраняется в памяти при инициализации класса во время выполнения
-        public static readonly Random s_random = new Random();
-        // Статическое изменяемое поле
-        private static Int32 s_numberOfWrites = 0;
-        //Неизменяемое экземплярное поле
-        public readonly String Pathname = "Untitled";
-        // Изменяемое экземплярное поле
-        private System.IO.FileStream m_fs;
-
-        public SomeType(String patname)
+        // InvalidChars всегда ссылается на один объект массива
+        public static readonly Char[] InvalidChars = new Char[] { 'A', 'B', 'C' };
+    }
+    public sealed class AnotherType
+    {
+        public void M()
         {
-            // Эта строка изменяет значение неизменяемого поля
-            // В данном случае это возможно, так как показанный далее код
-            // расположен в конструкторе
-            Pathname = patname;
+            // Следующие строки кода вполне корректны, компилируются
+            // и успешно изменяют символы в массиве InvalidChars
+            AType.InvalidChars[0] = 'D';
+            AType.InvalidChars[1] = 'E';
+            AType.InvalidChars[2] = 'F';
+            // Следующая строка некорректна и не скомпилируется,
+            // так как ссылка InvalidChars изменяться не может
+            AType.InvalidChars = new Char[] { 'X', 'Y', 'Z' };
         }
-        public String DoSomething()
+        
+    public override string ToString()
         {
-            // Эта строка читает и записывает значение статического изменяемого поля
-            s_numberOfWrites = s_numberOfWrites + 1;
-            // Эта строка читает значение неизменяемого экземплярного поля
-            return Pathname;
+            return String.Format("{0},{1},{2}", AType.InvalidChars[0], AType.InvalidChars[1], AType.InvalidChars[2]);
         }
     }
     public static void Main()
     {
+        AnotherType a = new AnotherType();
+        Console.WriteLine(a);
+        a.M();
+        Console.WriteLine(a);
         Console.ReadKey();
     }
 }
