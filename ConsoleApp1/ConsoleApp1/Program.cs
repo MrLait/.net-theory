@@ -9,7 +9,13 @@ namespace CompanyA
         public void Dial()
         {
             Console.WriteLine("Phone.Dial");
+            EstablishConnection();
             //Выполнить действия по набору номера
+        }
+        protected virtual void EstablishConnection()
+        {
+            Console.WriteLine("Phone.EstablishConnection");
+            // Выполнить действия по установлению соединения
         }
     }
 }
@@ -20,14 +26,16 @@ namespace CompanyB
     public class BetterPhone : Phone
     {
         // Этот метод Dial никак не связан с одноименным методом класса Phone
-        public new void Dial() 
+        public new void Dial()
 
         {
             Console.WriteLine("BetterPhone.Dial");
             EstablishConnection();
             base.Dial();
         }
-        protected virtual void EstablishConnection()
+        // Ключевое слово 'new' указывает, что этот метод
+        // не связан с методом EstablishConnection базового типа
+        protected new virtual void EstablishConnection()
         {
             Console.WriteLine("BetterPhone.EstablishConnection");
             // Выполнить действия по набору телефонного номера
@@ -47,10 +55,6 @@ public sealed class Programm
     }
 }
 
-//Предупреждение CS0108: //'"BetterPhone.Dial()" скрывает наследуемый член "Phone.Dial()". 
-                        //Если скрытие было намеренным, используйте ключевое слово new.	
-
-
-//warning CS0108: //'CompanyB.BetterPhone.Dial()' hides inherited member
-                 // 'CompanyA.Phone.Dial()'. Use the new keyword if hiding
-                //   was intended.
+//Предупреждение CS0114://'"BetterPhone.EstablishConnection()" скрывает наследуемый член "Phone.EstablishConnection()". 
+                        //Чтобы текущий член переопределял эту реализацию, добавьте ключевое слово override. 
+                        //В противном случае добавьте ключевое слово new.
