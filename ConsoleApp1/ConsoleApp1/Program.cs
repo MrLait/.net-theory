@@ -25,17 +25,12 @@ namespace CompanyB
 {
     public class BetterPhone : Phone
     {
-        // Этот метод Dial никак не связан с одноименным методом класса Phone
-        public new void Dial()
+        // Метод Dial удален (так как он наследуется от базового типа)
 
-        {
-            Console.WriteLine("BetterPhone.Dial");
-            EstablishConnection();
-            base.Dial();
-        }
-        // Ключевое слово 'new' указывает, что этот метод
-        // не связан с методом EstablishConnection базового типа
-        protected new virtual void EstablishConnection()
+        // Здесь ключевое слово new удалено, а модификатор virtual заменен
+        // на override, чтобы указать, что этот метод связан с методом
+        // EstablishConnection из базового типа
+        protected override void EstablishConnection()
         {
             Console.WriteLine("BetterPhone.EstablishConnection");
             // Выполнить действия по набору телефонного номера
@@ -47,14 +42,8 @@ public sealed class Programm
 {
     public static void Main()
     {
-        Phone p1 = new Phone();
-        p1.Dial();
         BetterPhone p2 = new BetterPhone();
         p2.Dial();
         Console.ReadKey();
     }
 }
-
-//Предупреждение CS0114://'"BetterPhone.EstablishConnection()" скрывает наследуемый член "Phone.EstablishConnection()". 
-                        //Чтобы текущий член переопределял эту реализацию, добавьте ключевое слово override. 
-                        //В противном случае добавьте ключевое слово new.
