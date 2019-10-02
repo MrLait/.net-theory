@@ -19,9 +19,8 @@ namespace CompanyB
 {
     public class BetterPhone : Phone
     {
-        //Предупреждение CS0108	'"BetterPhone.Dial()"
-        //скрывает наследуемый член "Phone.Dial()".
-        public void Dial() 
+        // Этот метод Dial никак не связан с одноименным методом класса Phone
+        public new void Dial() 
 
         {
             Console.WriteLine("BetterPhone.Dial");
