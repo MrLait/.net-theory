@@ -18,8 +18,9 @@ public sealed class Programm
         // Инициализирующая строка
         StringBuilder sb = new StringBuilder("Hi.");
         // Замена точки восклицательным знаком
+        sb.Replace('.', '!');
         // и получение номера символа в первом предложении
-        Int32 index = StringBuilderExtensions.IndexOf(sb.Replace('.', '!'), '!');
+        Int32 index = StringBuilderExtensions.IndexOf(sb, '!');
 
     }
 }
