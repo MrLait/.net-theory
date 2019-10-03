@@ -1,25 +1,28 @@
 ﻿using System;
-using System.Text;
-
-public static class StringBuilderExtensions
+using System.Collections.Generic;
+public static class MyExtencion
 {
-    //Добавлен this,что бы добавить свойметод расширения в StringBuilder
-    public static Int32 IndexOf(this StringBuilder sb,Char value)
+    public static void ShowItems<T>(this IEnumerable<T> collection)
     {
-        for (int index = 0; index < sb.Length; index++)
-        if (sb[index] == value) return index;
-        return -1;
+        foreach (var item in collection)
+        {
+            Console.WriteLine(item);
+        }
     }
 }
 public sealed class Programm
 {
     public static void Main()
     {
-        // Инициализирующая строка
-        StringBuilder sb = new StringBuilder("Hi.");
-        // Замена точки восклицательным знаком
-        // и получение номера символа в первом предложении
-        Int32 index = sb.Replace('.', '!').IndexOf('!');
-
+        // Показывает каждый символ в каждой строке консоли
+        "Grant".ShowItems();
+        // Показывает каждую строку в каждой строке консоли
+        new[] { "asd", "asd2" }.ShowItems();
+        // Показывает каждый Int32 в каждой строчке консоли.
+        new List<Int32>() { 1, 2, 3 }.ShowItems(); 
+        Console.ReadKey();
     }
+
 }
+
+
