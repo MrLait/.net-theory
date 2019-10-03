@@ -3,12 +3,12 @@ using System.Text;
 
 public static class StringBuilderExtensions
 {
-    public static Int32 IndexOf(StringBuilder sb,Char value)
+    //Добавлен this,что бы добавить свойметод расширения в StringBuilder
+    public static Int32 IndexOf(this StringBuilder sb,Char value)
     {
         for (int index = 0; index < sb.Length; index++)
         if (sb[index] == value) return index;
         return -1;
-
     }
 }
 public sealed class Programm
@@ -18,9 +18,8 @@ public sealed class Programm
         // Инициализирующая строка
         StringBuilder sb = new StringBuilder("Hi.");
         // Замена точки восклицательным знаком
-        sb.Replace('.', '!');
         // и получение номера символа в первом предложении
-        Int32 index = StringBuilderExtensions.IndexOf(sb, '!');
+        Int32 index = sb.Replace('.', '!').IndexOf('!');
 
     }
 }
