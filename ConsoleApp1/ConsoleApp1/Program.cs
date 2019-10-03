@@ -1,26 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-public static class MyExtencion
+// Сгенерированный код в некотором файле с исходным кодом: 
+internal class Base
 {
-    public static void InvokeAndCatch<TException>(this Action<Object> d, Object o)
-        where TException : Exception
+    private String m_name;
+    // Вызывается перед изменением поля m_name 
+    protected virtual void OnNameChanging(String value) 
+    { }
+    public String Name
     {
-        try
+        get { return m_name; }
+        set
         {
-            d(o);
+            // Информирует класс о возможных изменениях 
+            OnNameChanging(value.ToUpper());
+            m_name = value; // Изменение поля 
         }
-        catch (TException) { }
     }
 }
-    public sealed class Programm
+// Написанный программистом код из другого файла 
+internal class Derived : Base
+{
+    protected override void OnNameChanging(string value)
     {
-        public static void Main()
-        {
-            Action<Object> action = o => Console.WriteLine(o.GetType());
-            // Выдает NullReferenceException
-            action.InvokeAndCatch<NullReferenceException>(null);
-            // Поглощает NullReferenceException
-        }
+        if (String.IsNullOrEmpty(value))
+            throw new ArgumentNullException("value");
+    }
 }
-
 
