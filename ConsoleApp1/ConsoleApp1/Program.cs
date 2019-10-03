@@ -3,18 +3,15 @@
 internal struct Point
 {
     public Int32 m_x, m_y;
-    public Point(Int32 x, Int32 y)
+    public Point()
     {
-        m_x = x;
-        m_y = y;
+        m_x = m_y = 5;
     }
 }
 internal sealed class Rectangle
 {
     public Point m_topLeft, m_bottonRight;
-    public Rectangle(Point topLeft, Point buttonRight)
+    public Rectangle()
     {
-        m_topLeft = topLeft;
-        m_bottonRight = buttonRight;
     }
 }
