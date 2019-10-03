@@ -4,7 +4,12 @@ public sealed class Complex
 {
     public static Complex operator+(Complex c1,Complex c2)
     {
-        return null;
+        return (c1 + c2);
+    }
+    //или так
+    public static Complex Add(Complex c1, Complex c2)
+    {
+        return (c1 + c2);
     }
 }
 
