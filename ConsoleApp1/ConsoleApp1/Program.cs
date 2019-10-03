@@ -1,19 +1,20 @@
 ﻿using System;
 
-internal sealed class SomeType
+public sealed class Complex
 {
-    private static Int32 m_x = 5;
-    static SomeType()
+    public static Complex operator+(Complex c1,Complex c2)
     {
-        m_x = 10;
+        return null;
     }
 }
+
 public sealed class Programm
 {
     public static void Main()
     {
-        SomeType p = new SomeType();
-        Console.WriteLine(p);
+        Complex c = new Complex();
+        //SomeType p = new SomeType();
+        //Console.WriteLine(p);
         Console.ReadKey();
     }
 }
