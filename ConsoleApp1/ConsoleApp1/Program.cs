@@ -4,28 +4,25 @@ public sealed class Programm
 {
     public static void Main()
     {
-        FileStream fs; // Объект fs не инициализирован
-        // Первый файл открывается для обработки
-        StartProcessingFiles(out fs);
+        FileStream fs = null; // Обязательное присвоение
+                              // начального значения null
+        // Открытие первого файла для обработки
+        ProcessingFiles(ref fs);
         // Продолжаем, пока остаются файлы для обработки
-        for (;  fs != null; ContinueProcessingFiles(ref fs))
+        for (;  fs != null; ProcessingFiles(ref fs))
         {
             Byte[] bytes = new Byte[fs.Length];
             //Обработка файла
             fs.Read(bytes);
         }
     }
-    private static void StartProcessingFiles(out FileStream fs)
+    private static void ProcessingFiles(ref FileStream fs)
     {
-        fs = new FileStream("Path", FileMode.Open); // в этом методе объект fs
-                                                    // должен инициализироваться
-    }
-    private static void ContinueProcessingFiles(ref FileStream fs)
-    {
-        fs.Close(); // Закрытие последнего обрабатываемого файла
+        // Если предыдущий файл открыт, закрываем его
+        if (fs != null) fs.Close(); // Закрыть последний обрабатываемый файл
         // Открыть следующий файл или вернуть null, если файлов больше нет
         if (noMoreFilesToProcess) fs = null;
-        else fs = new FileStream("newPath", FileMode.Open);
+        else fs = new FileStream("newPath", FileMode.Open); 
     }
 }
 
