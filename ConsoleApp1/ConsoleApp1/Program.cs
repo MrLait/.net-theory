@@ -1,28 +1,22 @@
 ﻿using System;
-using System.IO;
 public sealed class Programm
 {
     public static void Main()
     {
-        FileStream fs = null; // Обязательное присвоение
-                              // начального значения null
-        // Открытие первого файла для обработки
-        ProcessingFiles(ref fs);
-        // Продолжаем, пока остаются файлы для обработки
-        for (;  fs != null; ProcessingFiles(ref fs))
-        {
-            Byte[] bytes = new Byte[fs.Length];
-            //Обработка файла
-            fs.Read(bytes);
-        }
+        String s1 = "Jeffrey";
+        String s2 = "Richter";
+        Object o1 = (Object)s1, o2 = (Object)s2;
+        Swap(ref o1, ref o2);
+        s1 = (String)o1;
+        s2 = (String)o2;
+        Console.WriteLine(s1); // Выводит "Richter"
+        Console.WriteLine(s2); // Выводит "Jeffrey
     }
-    private static void ProcessingFiles(ref FileStream fs)
+    public static void Swap(ref Object a, ref Object b)
     {
-        // Если предыдущий файл открыт, закрываем его
-        if (fs != null) fs.Close(); // Закрыть последний обрабатываемый файл
-        // Открыть следующий файл или вернуть null, если файлов больше нет
-        if (noMoreFilesToProcess) fs = null;
-        else fs = new FileStream("newPath", FileMode.Open); 
+        Object t = b;
+        b = a;
+        a = t;
     }
 }
 
