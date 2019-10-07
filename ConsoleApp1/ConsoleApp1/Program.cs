@@ -4,13 +4,13 @@ public sealed class Programm
 {
     public static void Main()
     {
-        Int32 x; // Инициализация х
-        GetVal(out x); // Инициализация х не обязательна
+        Int32 x = 5; // Инициализация х
+        AddVal(ref x); // x требуется инициализировать
         Console.WriteLine(x); 
     }
-    private static void GetVal(out Int32 x)
+    private static void AddVal(ref Int32 x)
     {
-        x = 10;
+        x += 10;
     }
 }
 
