@@ -3,17 +3,20 @@ public sealed class Programm
 {
     public static void Main()
     {
-        String s1 = "Jeffrey";
-        String s2 = "Richter";
-        Swap(ref s1, ref s2);
-        Console.WriteLine(s1); // Выводит "Richter"
-        Console.WriteLine(s2); // Выводит "Jeffrey
     }
-    public static void Swap<T>(ref T a, ref T b)
+    static Int32 Add(params Int32[] values)
     {
-        T t = b;
-        b = a;
-        a = t;
+        // ПРИМЕЧАНИЕ: при необходимости этот массив
+        // можно передать другим методам
+        Int32 sum = 0;
+        if (values != null)
+        {
+            for (Int32 i = 0; i < values.Length; i++)
+            {
+                sum += values[i];
+            }
+        }
+        return sum;
     }
 }
 
