@@ -1,70 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
 public sealed class Program
 {
     public static void Main()
     {
-        Employee e = new Employee() { Name = "Jeff", Age = 45 };
-        //конструктор без параметров
-        Employee e1 = new Employee();
-        e1.Name = "Jeff";
-        e1.Age = 45;
+        // Определение типа, создание сущности и инициализация свойств
+        var o1 = new { Name = "Jeff", Year = 2019 };
+        Console.WriteLine("Name {0}, Year {1}", o1.Name, o1.Year);
 
-        String s = new Employee { Name = "Jeff", Age = 45 }.ToString().ToUpper();
-
-        // код создает объект Classroom и инициализирует коллекцию Students
-        Classroom classroom = new Classroom { Students = { "Jeff", "Kristin", "Aidan", "Grant" } };
-        // Вывести имена 4 студентов, находящихся в классе
-        foreach (var students in classroom.Students)
+        String Name = "Jeff";
+        DateTime dt = DateTime.Now;
+        // Анонимный тип с двумя свойствами
+        // 1. Строковому свойству Name назначено значение Grant
+        // 2. Свойству Year типа Int32 Year назначен год из dt
+        var o2 = new { Name, dt.Year };
+        // Совпадение типов позволяет осуществлять операции сравнения и присваивания
+        Console.WriteLine("Objects are equal: " + o1.Equals(o2));
+        o1 = o2;
+        Console.WriteLine(o1.Equals(o2));
+        //Раз эти типы идентичны, то можно создать массив явных 
+        //типов из анонимных типов
+        // Это работает, так как все объекты имею один анонимный тип
+        var people = new[]
         {
-            Console.WriteLine("Student name " + students);
-        }
-        Console.WriteLine();
-        //это тоже самое т.к компилятор предпологает, что List<String> 
-        //реализует интерфейс IEnumerable<String>.
-        Classroom classroom1 = new Classroom();
-        classroom1.Students.Add("Jeff1");
-        classroom1.Students.Add("Kristin1");
-        classroom1.Students.Add("Aidan1");
-        classroom1.Students.Add("Grant1");
-
-        foreach (var students in classroom1.Students)
-        {
-            Console.WriteLine("Student name " + students);
-        }
-
-        Dictionary<String, Int32> table = new Dictionary<String, Int32>
-        {
-            { "Jeffrey", 1 }, { "Kristin", 2 }, { "Aidan", 3 }, { "Grant", 4 }
+            o1,
+            o2,
+            new { Name = "xa", Year = 1992 },
+            new { Name = "name2", Year = 1993 }
         };
-        foreach (var item in table)
+        // Организация перебора массива анонимных типов
+        // (ключевое слово var обязательно).
+        foreach (var person in people)
         {
-            Console.WriteLine("Name: " + item.Key + " Age: " + item.Value);
+            Console.WriteLine("Person = {0}; Year = {1}", person.Name, person.Year);
         }
-        //Это равносильно следующему коду:
-        Dictionary<String, Int32> table1 = new Dictionary<string, int>();
-        table1.Add("Jeffrey", 1);
-        table1.Add("Kristin", 2);
-        table1.Add("Aidan", 3);
-        table1.Add("Grant", 4);
-        foreach (var item in table1)
-        {
-            Console.WriteLine("Name: " + item.Key + " Age: " + item.Value);
-        }
+
+        String myDocuments =
+ Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        var query =
+         from pathname in Directory.GetFiles(myDocuments)
+         let LastWriteTime = File.GetLastWriteTime(pathname)
+         where LastWriteTime > (DateTime.Now - TimeSpan.FromDays(7))
+         orderby LastWriteTime
+         select new { Path = pathname, LastWriteTime };
+        foreach (var file in query)
+            Console.WriteLine("LastWriteTime={0}, Path={1}",
+            file.LastWriteTime, file.Path);
     }
 
-
-    public sealed class Classroom
-    {
-        private List<String> m_students = new List<string>();
-        public List<String> Students { get { return m_students; } }
-        public Classroom() { }
-    }
-
-    private class Employee
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
 }
 
