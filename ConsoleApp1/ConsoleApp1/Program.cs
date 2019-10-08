@@ -6,27 +6,22 @@ public sealed class Programm
 {
     public static void Main()
     {
-    }
-    // Рекомендуется в этом методе использовать параметр слабого типа
-    public void ManipulateItems<T>(IEnumerable<T> collection) { }
-    // Не рекомендуется в этом методе использовать параметр сильного типа
-    public void ManipulateItems<T>(List<T> collection) { }
-    // Рекомендуется в этом методе использовать параметр мягкого типа
-    public void ProcessBytes(Stream someStream){}
-    // Не рекомендуется в этом методе использовать параметр сильного типа
-    public void ProcessBytes(FileStream someStream) {}
+        var minmax = MinMax(6, 2);
+        Console.WriteLine("Min={0}, Max={1}",
+            minmax.Item1, minmax.Item2); // Min=2, Max=6
+        var t = Tuple.Create(0, 1, 2, 3, 4, 5, 6, Tuple.Create(7, 8, 9));
+        Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}",
+         t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7,
+         t.Rest.Item1.Item1, t.Rest.Item1.Item2, t.Rest.Item1.Item3);
 
-    // Рекомендуется в этом методе использовать
-    // сильный тип возвращаемого объекта
-    public FileStream openFile() { return new FileStream("path", FileMode.Open); }
-    // Не рекомендуется в этом методе использовать
-    // слабый тип возвращаемого объекта
-    public Stream OpenFile() { return Stream.Null; }
-    // Гибкий вариант: в этом методе используется
-    // мягкий тип возвращаемого объекта
-    public IList<Stream> GetStringCollection() { return null; }
-    // Негибкий вариант: в этом методе используется
-    // сильный тип возвращаемого объекта
-    public List<Stream> GetStringCollection() { return null; }
+    }
+
+    // Возвращает минимум в Item1 и максимум в Item2
+    private static Tuple<Int32, Int32> MinMax(Int32 a, Int32 b)
+    {
+        return Tuple.Create(Math.Min(a, b), Math.Max(a, b));// Упрощенный
+                                                            // синтаксис
+
+    }
 }
 
