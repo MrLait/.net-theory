@@ -1,91 +1,111 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
-// Этап 1. Определение типа для хранения информации,
-// которая передается получателям уведомления о событии
-internal class NewMailEventArgs : EventArgs
+// Этот класс нужен для поддержания безопасности типа
+// и кода при использовании EventSet
+public sealed class EventKey : Object { }
+public sealed class EventSet
 {
-    private readonly String m_from, m_to, m_subject;
-    public NewMailEventArgs(String from, String to, String subject)
+    // Закрытый словарь служит для отображения EventKey -> Delegate
+    private readonly Dictionary<EventKey, Delegate> m_events =
+        new Dictionary<EventKey, Delegate>();
+    // Добавление отображения EventKey -> Delegate, если его не существует
+    // И компоновка делегата с существующим ключом EventKey
+    public void Add(EventKey eventKey, Delegate handler)
     {
-        m_from = from; m_to = to; m_subject = subject;
+        Monitor.Enter(m_events);
+        Delegate d;
+        m_events.TryGetValue(eventKey, out d);
+        m_events[eventKey] = Delegate.Combine(d, handler);
+        Monitor.Exit(m_events);
     }
-    public String From { get { return m_from; } }
-    public String To { get { return m_to; } }
-    public String Subject { get { return m_subject; } }
-}
-// Этап 2. Определение члена-события
-internal class MailManager
-{
-    //Здесь NewMail — имя события, а типом события 
-    //является EventHandler <NewMailEventArgs>. 
-    public event EventHandler<NewMailEventArgs> NewMail;
-
-    // Этап 3. Определение метода, ответственного за уведомление
-    // зарегистрированных объектов о событии
-    // Если этот класс изолированный, нужно сделать метод закрытым
-    // или невиртуальным
-    protected virtual void OnNewMail(NewMailEventArgs e)
+    // Удаление делегата из EventKey (если он существует)
+    // и разрыв связи EventKey -> Delegate при удалении последнего делегата
+    public void Remove(EventKey eventKey, Delegate handler)
     {
-        e.Raise(this, ref NewMail);
+        Monitor.Enter(m_events);
+        Delegate d;
+        if (m_events.TryGetValue(eventKey, out d))
+        {
+            d = Delegate.Remove(d, handler);
+            // Если делегат остается, то установить новый ключ EventKey,
+            // иначе – удалить EventKey
+            if (d != null) m_events[eventKey] = d;
+            else m_events.Remove(eventKey);
+        }
+        Monitor.Exit(m_events);
     }
-    // Этап 4. Определение метода, преобразующего входную
-    // информацию в желаемое событие
-    public void SimulateNewMail(String from, String to, String subject)
+    // Информирование о событии для обозначенного ключа EventKey
+    public void Raise(EventKey eventKey, Object sender, EventArgs e)
     {
-        // Создать объект для хранения информации, которую
-        // нужно передать получателям уведомления
-        NewMailEventArgs e = new NewMailEventArgs(from, to, subject);
-        // Вызвать виртуальный метод, уведомляющий объект о событии
-        // Если ни один из производных типов не переопределяет этот метод,
-        // объект уведомит всех зарегистрированных получателей уведомления
-        OnNewMail(e);
-    }
-}
-//Уведомление о событии, безопасное в отношении потоков
-public static class EventArgExtensions
-{
-    public static void Raise<TEventArgs>(this TEventArgs e,
-        Object sender, ref EventHandler<TEventArgs> eventDelegate)
-    {
-        // Копирование ссылки на поле делегата во временное поле
-        // для безопасности в отношении потоков
-        EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
-        // Если зарегистрированный метод заинтересован в событии, уведомите его
-        if (temp != null) temp(sender, e);
-    }
-}
-internal sealed class Fax
-{
-    // Передаем конструктору объект MailManager
-    public Fax(MailManager mm)
-    {
-        // Создаем экземпляр делегата EventHandler<NewMailEventArgs>,
-        // ссылающийся на метод обратного вызова FaxMsg
-        // Регистрируем обратный вызов для события NewMail объекта MailManager
-        mm.NewMail += FaxMsg;
-    }
-    // MailManager вызывает этот метод для уведомления
-    // объекта Fax о прибытии нового почтового сообщения
-    private void FaxMsg(object sender, NewMailEventArgs e)
-    {
-        // 'sender' используется для взаимодействия с объектом MailManager,
-        // если потребуется передать ему какую-то информацию
-
-        // 'e' определяет дополнительную информацию о событии,
-        // которую пожелает предоставить MailManager
-
-        // Обычно расположенный здесь код отправляет сообщение по факсу
-        // Тестовая реализация выводит информацию на консоль
-        Console.WriteLine("Faxing mail message:");
-        Console.WriteLine("From={0}, To={1}, Subject={2}",
-        e.From, e.To, e.Subject);
-    }
-    // Этот метод может выполняться для отмены регистрации объекта Fax
-    // в качестве получтеля уведомлений о событии NewMail
-    public void Unregister(MailManager mm)
-    {
-        // Отменить регистрацию на уведомление о событии NewMail объекта
-        mm.NewMail -= FaxMsg;
+        // Не выдавать исключение при отсутствии ключа EventKey
+        Delegate d;
+        Monitor.Enter(m_events);
+        m_events.TryGetValue(eventKey, out d);
+        Monitor.Exit(m_events);
+        if (d != null)
+        {
+            // Из-за того что словарь может содержать несколько разных типов
+            // делегатов, невозможно создать вызов делегата, безопасный по
+            // отношению к типу, во время компиляции. Я вызываю метод
+            // DynamicInvoke типа System.Delegate, передавая ему параметры метода
+            // обратного вызова в виде массива объектов. DynamicInvoke будет
+            // контролировать безопасность типов параметров для вызываемого
+            // метода обратного вызова. Если будет найдено несоответствие типов,
+            // выдается исключение.
+            d.DynamicInvoke(new Object[] { sender, e });
+        }
     }
 }
+// Определение типа, унаследованного от EventArgs для этого события
+public class FooEventArgs : EventArgs { }
+public class TypeWithLotsOfEvents
+{
+    // Определение закрытого экземплярного поля, ссылающегося на коллекцию.
+    // Коллекция управляет множеством пар "Event/Delegate"
+    // Примечание: Тип EventSet не входит в FCL,
+    // это мой собственный тип
+    private readonly EventSet m_eventSet = new EventSet();
+    // Защищенное свойство позволяет производным типам работать с коллекцией
+    protected EventSet EventSet { get { return m_eventSet; } }
+    #region Code to support the Foo event (repeat this pattern for additional events)
+    // Определение членов, необходимых для события Foo.
+    // 2a. Создайте статический, доступный только для чтения объект
+    // для идентификации события.
+    // Каждый объект имеет свой хеш-код для нахождения связанного списка
+    // делегатов события в коллекции.
+    protected static readonly EventKey s_fooEventKey = new EventKey();
+    // 2b. Определение для события методов доступа для добавления
+    // или удаления делегата из коллекции.
+    public event EventHandler<FooEventArgs> Foo
+    {
+        add { m_eventSet.Add(s_fooEventKey, value); }
+        remove { m_eventSet.Remove(s_fooEventKey, value); }
+    }
+    // 2c. Определение защищенного виртуального метода On для этого события.
+    protected virtual void OnFoo(FooEventArgs e)
+    {
+        m_eventSet.Raise(s_fooEventKey, this, e);
+    }
+    // 2d. Определение метода, преобразующего входные данные этого события
+    public void SimulateFoo() { OnFoo(new FooEventArgs()); }
+    #endregion
+}
 
+public sealed class Program
+{
+    public static void Main()
+    {
+        TypeWithLotsOfEvents twle = new TypeWithLotsOfEvents();
+
+        // Добавление обратного вызова
+        twle.Foo += HandleFooEvent;
+
+        // Проверяем работоспособность
+        twle.SimulateFoo();
+    }
+    private static void HandleFooEvent(object sender, FooEventArgs e)
+    {
+        Console.WriteLine("Handling Foo Event here...");
+    }
+}
