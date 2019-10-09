@@ -1,56 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
-public sealed class Program
+public sealed class BitArray
 {
+    // Закрытый байтовый массив, хранящий биты
+    private Byte[] m_byteArray;
+    private Int32 m_numBits;
+    // Конструктор, выделяющий память для байтового массива
+    // и устанавливающий все биты в 0
+    public BitArray(Int32 numBits)
+    {
+        // Начинаем с проверки аргументов
+        if (numBits <= 0)
+            throw new ArgumentOutOfRangeException("numBits must be > 0");
+
+        //Сохранить число битов
+        m_numBits = numBits;
+        // Выделить байты для массива битов
+        m_byteArray = new Byte[(numBits + 7) / 8];
+    }
+    // Индексатор (свойство с параметрами)
+    public Boolean this[Int32 bitPos]
+    {
+        // Метод доступа get индексатора
+        get
+        {
+            // Сначала нужно проверить аргументы
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException("bitPos");
+            // Вернуть состояние индексируемого бита
+            return (m_byteArray[bitPos / 8] & (1 << (bitPos % 8))) != 0;
+        }
+        // Метод доступа set индексатора
+        set
+        {
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException(
+                    "bitPos", bitPos.ToString());
+            if (value)
+            {
+                // Установить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] | (1 << (bitPos % 8)));
+            }
+            else
+            {
+                // Сбросить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] & ~(1 << (bitPos % 8)));
+            }
+        }
+    }
+
     public static void Main()
     {
-        // Определение типа, создание сущности и инициализация свойств
-        var o1 = new { Name = "Jeff", Year = 2019 };
-        Console.WriteLine("Name {0}, Year {1}", o1.Name, o1.Year);
+        // Выделить массив BitArray, который может хранить 14 бит
+        BitArray ba = new BitArray(14);
 
-        String Name = "Jeff";
-        DateTime dt = DateTime.Now;
-        // Анонимный тип с двумя свойствами
-        // 1. Строковому свойству Name назначено значение Grant
-        // 2. Свойству Year типа Int32 Year назначен год из dt
-        var o2 = new { Name, dt.Year };
-        // Совпадение типов позволяет осуществлять операции сравнения и присваивания
-        Console.WriteLine("Objects are equal: " + o1.Equals(o2));
-        o1 = o2;
-        Console.WriteLine(o1.Equals(o2));
-        //Раз эти типы идентичны, то можно создать массив явных 
-        //типов из анонимных типов
-        // Это работает, так как все объекты имею один анонимный тип
-        var people = new[]
+        // Установить все четные биты вызовом метода доступа set
+        for (Int32 x = 0; x < 14; x++)
         {
-            o1,
-            o2,
-            new { Name = "xa", Year = 1992 },
-            new { Name = "name2", Year = 1993 }
-        };
-        // Организация перебора массива анонимных типов
-        // (ключевое слово var обязательно).
-        foreach (var person in people)
-        {
-            Console.WriteLine("Person = {0}; Year = {1}", person.Name, person.Year);
+            ba[x] = (x % 2 == 0);
         }
-
-        String myDocuments =
- Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-        var query =
-         from pathname in Directory.GetFiles(myDocuments)
-         let LastWriteTime = File.GetLastWriteTime(pathname)
-         where LastWriteTime > (DateTime.Now - TimeSpan.FromDays(7))
-         orderby LastWriteTime
-         select new { Path = pathname, LastWriteTime };
-        foreach (var file in query)
-            Console.WriteLine("LastWriteTime={0}, Path={1}",
-            file.LastWriteTime, file.Path);
+        // Вывести состояние всех битов вызовом метода доступа get
+        for (Int32 x = 0; x < 14; x++)
+        {
+            Console.WriteLine("Bit " + x + " is " + (ba[x] ? "On" : "Off"));
+        }
     }
 
 }
