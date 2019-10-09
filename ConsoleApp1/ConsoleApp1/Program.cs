@@ -1,32 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-public sealed class Programm
+using System.Runtime.CompilerServices;
+public sealed class BitArray
 {
+    // Закрытый байтовый массив, хранящий биты
+    private Byte[] m_byteArray;
+    private Int32 m_numBits;
+    // Конструктор, выделяющий память для байтового массива
+    // и устанавливающий все биты в 0
+    public BitArray(Int32 numBits)
+    {
+        // Начинаем с проверки аргументов
+        if (numBits <= 0)
+            throw new ArgumentOutOfRangeException("numBits must be > 0");
+
+        //Сохранить число битов
+        m_numBits = numBits;
+        // Выделить байты для массива битов
+        m_byteArray = new Byte[(numBits + 7) / 8];
+    }
+    // Индексатор (свойство с параметрами)
+    public Boolean this[Int32 bitPos]
+    {
+        // Метод доступа get индексатора
+        get
+        {
+            // Сначала нужно проверить аргументы
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException("bitPos");
+            // Вернуть состояние индексируемого бита
+            return (m_byteArray[bitPos / 8] & (1 << (bitPos % 8))) != 0;
+        }
+        // Метод доступа set индексатора
+        set
+        {
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException(
+                    "bitPos", bitPos.ToString());
+            if (value)
+            {
+                // Установить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] | (1 << (bitPos % 8)));
+            }
+            else
+            {
+                // Сбросить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] & ~(1 << (bitPos % 8)));
+            }
+        }
+    }
+
     public static void Main()
     {
-    }
-    // Рекомендуется в этом методе использовать параметр слабого типа
-    public void ManipulateItems<T>(IEnumerable<T> collection) { }
-    // Не рекомендуется в этом методе использовать параметр сильного типа
-    public void ManipulateItems<T>(List<T> collection) { }
-    // Рекомендуется в этом методе использовать параметр мягкого типа
-    public void ProcessBytes(Stream someStream){}
-    // Не рекомендуется в этом методе использовать параметр сильного типа
-    public void ProcessBytes(FileStream someStream) {}
+        // Выделить массив BitArray, который может хранить 14 бит
+        BitArray ba = new BitArray(14);
 
-    // Рекомендуется в этом методе использовать
-    // сильный тип возвращаемого объекта
-    public FileStream openFile() { return new FileStream("path", FileMode.Open); }
-    // Не рекомендуется в этом методе использовать
-    // слабый тип возвращаемого объекта
-    public Stream OpenFile() { return Stream.Null; }
-    // Гибкий вариант: в этом методе используется
-    // мягкий тип возвращаемого объекта
-    public IList<Stream> GetStringCollection() { return null; }
-    // Негибкий вариант: в этом методе используется
-    // сильный тип возвращаемого объекта
-    public List<Stream> GetStringCollection() { return null; }
+        // Установить все четные биты вызовом метода доступа set
+        for (Int32 x = 0; x < 14; x++)
+        {
+            ba[x] = (x % 2 == 0);
+        }
+        // Вывести состояние всех битов вызовом метода доступа get
+        for (Int32 x = 0; x < 14; x++)
+        {
+            Console.WriteLine("Bit " + x + " is " + (ba[x] ? "On" : "Off"));
+        }
+    }
 }
 
