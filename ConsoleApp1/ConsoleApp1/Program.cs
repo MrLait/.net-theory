@@ -51,6 +51,32 @@ public sealed class BitArray
         }
     }
 
+    public Boolean get_Item(Int32 bitPos)
+    {
+        if (bitPos < 0 || bitPos >= m_numBits)
+            throw new ArgumentOutOfRangeException("bitPos");
+        // Вернуть состояние индексируемого бита
+        return (m_byteArray[bitPos / 8] & (1 << (bitPos % 8))) != 0;
+    }
+    public void set_Item(Int32 bitPos, Boolean value)
+    {
+        if (bitPos < 0 || bitPos >= m_numBits)
+            throw new ArgumentOutOfRangeException(
+                "bitPos", bitPos.ToString());
+        if (value)
+        {
+            // Установить индексируемый бит
+            m_byteArray[bitPos / 8] = (Byte)
+                (m_byteArray[bitPos / 8] | (1 << (bitPos % 8)));
+        }
+        else
+        {
+            // Сбросить индексируемый бит
+            m_byteArray[bitPos / 8] = (Byte)
+                (m_byteArray[bitPos / 8] & ~(1 << (bitPos % 8)));
+        }
+    }
+
     public static void Main()
     {
         // Выделить массив BitArray, который может хранить 14 бит
