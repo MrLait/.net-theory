@@ -1,27 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-public sealed class Programm
+using System.Runtime.CompilerServices;
+public sealed class BitArray
 {
-    public static void Main()
+    // Закрытый байтовый массив, хранящий биты
+    private Byte[] m_byteArray;
+    private Int32 m_numBits;
+    // Конструктор, выделяющий память для байтового массива
+    // и устанавливающий все биты в 0
+    public BitArray(Int32 numBits)
     {
-        var minmax = MinMax(6, 2);
-        Console.WriteLine("Min={0}, Max={1}",
-            minmax.Item1, minmax.Item2); // Min=2, Max=6
-        var t = Tuple.Create(0, 1, 2, 3, 4, 5, 6, Tuple.Create(7, 8, 9));
-        Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}",
-         t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7,
-         t.Rest.Item1.Item1, t.Rest.Item1.Item2, t.Rest.Item1.Item3);
+        // Начинаем с проверки аргументов
+        if (numBits <= 0)
+            throw new ArgumentOutOfRangeException("numBits must be > 0");
 
+        //Сохранить число битов
+        m_numBits = numBits;
+        // Выделить байты для массива битов
+        m_byteArray = new Byte[(numBits + 7) / 8];
+    }
+    // Индексатор (свойство с параметрами)
+    public Boolean this[Int32 bitPos]
+    {
+        // Метод доступа get индексатора
+        get
+        {
+            // Сначала нужно проверить аргументы
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException("bitPos");
+            // Вернуть состояние индексируемого бита
+            return (m_byteArray[bitPos / 8] & (1 << (bitPos % 8))) != 0;
+        }
+        // Метод доступа set индексатора
+        set
+        {
+            if (bitPos < 0 || bitPos >= m_numBits)
+                throw new ArgumentOutOfRangeException(
+                    "bitPos", bitPos.ToString());
+            if (value)
+            {
+                // Установить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] | (1 << (bitPos % 8)));
+            }
+            else
+            {
+                // Сбросить индексируемый бит
+                m_byteArray[bitPos / 8] = (Byte)
+                    (m_byteArray[bitPos / 8] & ~(1 << (bitPos % 8)));
+            }
+        }
     }
 
-    // Возвращает минимум в Item1 и максимум в Item2
-    private static Tuple<Int32, Int32> MinMax(Int32 a, Int32 b)
+    public static void Main()
     {
-        return Tuple.Create(Math.Min(a, b), Math.Max(a, b));// Упрощенный
-                                                            // синтаксис
+        // Выделить массив BitArray, который может хранить 14 бит
+        BitArray ba = new BitArray(14);
 
+        // Установить все четные биты вызовом метода доступа set
+        for (Int32 x = 0; x < 14; x++)
+        {
+            ba[x] = (x % 2 == 0);
+        }
+        // Вывести состояние всех битов вызовом метода доступа get
+        for (Int32 x = 0; x < 14; x++)
+        {
+            Console.WriteLine("Bit " + x + " is " + (ba[x] ? "On" : "Off"));
+        }
     }
 }
 
