@@ -28,6 +28,18 @@ internal class MailManager
     {
         e.Raise(this, ref NewMail);
     }
+    // Этап 4. Определение метода, преобразующего входную
+    // информацию в желаемое событие
+    public void SimulateNewMail(String from, String to, String subject)
+    {
+        // Создать объект для хранения информации, которую
+        // нужно передать получателям уведомления
+        NewMailEventArgs e = new NewMailEventArgs(from, to, subject);
+        // Вызвать виртуальный метод, уведомляющий объект о событии
+        // Если ни один из производных типов не переопределяет этот метод,
+        // объект уведомит всех зарегистрированных получателей уведомления
+        OnNewMail(e);
+    }
 }
 //Уведомление о событии, безопасное в отношении потоков
 public static class EventArgExtensions
