@@ -26,23 +26,19 @@ internal class MailManager
     // или невиртуальным
     protected virtual void OnNewMail(NewMailEventArgs e)
     {
-        // Сохранить ссылку на делегата во временной переменной
-        // для обеспечения безопасности потоков
-        EventHandler<NewMailEventArgs> temp = Volatile.Read(ref NewMail);
-        // Если есть объекты, зарегистрированные для получения
-        // уведомления о событии, уведомляем их
-        if (temp != null) temp(this, e);
+        e.Raise(this, ref NewMail);
     }
 }
 //Уведомление о событии, безопасное в отношении потоков
 public static class EventArgExtensions
 {
-    public static void Raise<TEventArgs>(this EventArgs e,
+    public static void Raise<TEventArgs>(this TEventArgs e,
         Object sender, ref EventHandler<TEventArgs> eventDelegate)
     {
         // Копирование ссылки на поле делегата во временное поле
         // для безопасности в отношении потоков
         EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
+        // Если зарегистрированный метод заинтересован в событии, уведомите его
         if (temp != null) temp(sender, e);
     }
 }
