@@ -1,71 +1,49 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-public sealed class BitArray
+using System.Threading;
+// Этап 1. Определение типа для хранения информации,
+// которая передается получателям уведомления о событии
+internal class NewMailEventArgs : EventArgs
 {
-    // Закрытый байтовый массив, хранящий биты
-    private Byte[] m_byteArray;
-    private Int32 m_numBits;
-    // Конструктор, выделяющий память для байтового массива
-    // и устанавливающий все биты в 0
-    public BitArray(Int32 numBits)
+    private readonly String m_from, m_to, m_subject;
+    public NewMailEventArgs(String from, String to, String subject)
     {
-        // Начинаем с проверки аргументов
-        if (numBits <= 0)
-            throw new ArgumentOutOfRangeException("numBits must be > 0");
-
-        //Сохранить число битов
-        m_numBits = numBits;
-        // Выделить байты для массива битов
-        m_byteArray = new Byte[(numBits + 7) / 8];
+        m_from = from; m_to = to; m_subject = subject;
     }
-    // Индексатор (свойство с параметрами)
-    public Boolean this[Int32 bitPos]
+    public String From { get { return m_from; } }
+    public String To { get { return m_to; } }
+    public String Subject { get { return m_subject; } }
+}
+// Этап 2. Определение члена-события
+internal class MailManager
+{
+    //Здесь NewMail — имя события, а типом события 
+    //является EventHandler <NewMailEventArgs>. 
+    public event EventHandler<NewMailEventArgs> NewMail;
+
+    // Этап 3. Определение метода, ответственного за уведомление
+    // зарегистрированных объектов о событии
+    // Если этот класс изолированный, нужно сделать метод закрытым
+    // или невиртуальным
+    protected virtual void OnNewMail(NewMailEventArgs e)
     {
-        // Метод доступа get индексатора
-        get
-        {
-            // Сначала нужно проверить аргументы
-            if (bitPos < 0 || bitPos >= m_numBits)
-                throw new ArgumentOutOfRangeException("bitPos");
-            // Вернуть состояние индексируемого бита
-            return (m_byteArray[bitPos / 8] & (1 << (bitPos % 8))) != 0;
-        }
-        // Метод доступа set индексатора
-        set
-        {
-            if (bitPos < 0 || bitPos >= m_numBits)
-                throw new ArgumentOutOfRangeException(
-                    "bitPos", bitPos.ToString());
-            if (value)
-            {
-                // Установить индексируемый бит
-                m_byteArray[bitPos / 8] = (Byte)
-                    (m_byteArray[bitPos / 8] | (1 << (bitPos % 8)));
-            }
-            else
-            {
-                // Сбросить индексируемый бит
-                m_byteArray[bitPos / 8] = (Byte)
-                    (m_byteArray[bitPos / 8] & ~(1 << (bitPos % 8)));
-            }
-        }
+        // Сохранить ссылку на делегата во временной переменной
+        // для обеспечения безопасности потоков
+        EventHandler<NewMailEventArgs> temp = Volatile.Read(ref NewMail);
+        // Если есть объекты, зарегистрированные для получения
+        // уведомления о событии, уведомляем их
+        if (temp != null) temp(this, e);
     }
-
-    public static void Main()
+}
+//Уведомление о событии, безопасное в отношении потоков
+public static class EventArgExtensions
+{
+    public static void Raise<TEventArgs>(this EventArgs e,
+        Object sender, ref EventHandler<TEventArgs> eventDelegate)
     {
-        // Выделить массив BitArray, который может хранить 14 бит
-        BitArray ba = new BitArray(14);
-
-        // Установить все четные биты вызовом метода доступа set
-        for (Int32 x = 0; x < 14; x++)
-        {
-            ba[x] = (x % 2 == 0);
-        }
-        // Вывести состояние всех битов вызовом метода доступа get
-        for (Int32 x = 0; x < 14; x++)
-        {
-            Console.WriteLine("Bit " + x + " is " + (ba[x] ? "On" : "Off"));
-        }
+        // Копирование ссылки на поле делегата во временное поле
+        // для безопасности в отношении потоков
+        EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
+        if (temp != null) temp(sender, e);
     }
 }
 
