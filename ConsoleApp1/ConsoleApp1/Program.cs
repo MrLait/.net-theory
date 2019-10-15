@@ -6,26 +6,42 @@ public static class Program
 {
     public static void Main()
     {
+        MarioPizzeria mP = new MarioPizzeria();
+        // Эта строка вызывает открытый метод GetMenu класса MarioPizzeria
+        mP.GetMenu();
+        IWindow window = mP;
+        IRestaurant restaurant = mP;
+        window.GetMenu();
+        restaurant.GetMenu();
     }
 
-    public static class SomeType
+    public interface IWindow
     {
-        private static void Test()
+        Object GetMenu();
+    }
+    public interface IRestaurant
+    {
+        Object GetMenu();
+    }
+    // Этот тип является производным от System.Object
+    // и реализует интерфейсы IWindow и IRestaurant
+    public sealed class MarioPizzeria : IWindow, IRestaurant
+    {
+        // Реализация метода GetMenu интерфейса IWindow
+        Object IWindow.GetMenu()
         {
-            Int32 x = 5;
-            Guid g = new Guid();
-            // Компиляция этого вызова M выполняется без проблем,
-            // поскольку Int32 реализует и IComparable, и IConvertible
-            M(x);
-            // Компиляция этого вызова M приводит к ошибке, поскольку
-            // Guid реализует IComparable, но не реализует IConvertible
-            M(g);
+            return null;
         }
-        // Параметр T типа M ограничивается только теми типами,
-        // которые реализуют оба интерфейса: IComparable И IConvertible
-        private static Int32 M<T>(T t) where T : IComparable, IConvertible
+        // Реализация метода GetMenu интерфейса IRestaurant
+        Object IRestaurant.GetMenu()
         {
-            return 0;
+            return null;
+        }
+        // Метод GetMenu (необязательный),
+        // не имеющий отношения к интерфейсу
+        public Object GetMenu() 
+        {
+            return null;
         }
     }
 
