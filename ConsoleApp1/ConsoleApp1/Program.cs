@@ -6,26 +6,25 @@ public static class Program
 {
     public static void Main()
     {
-        SomeValueType v = new SomeValueType();
+        SomeValueType v = new SomeValueType(0);
+        IComparable c = v; // Упаковка!
         Object o = new Object();
-        Int32 n = v.CompareTo(v);
-        n = v.CompareTo(o);
+        Int32 n = c.CompareTo(v); // Нежелательная упаковка
+        n = c.CompareTo(o); // Исключение InvalidCastException
     }
-    public interface IComparable
-    {
-        Int32 CompareTo(Object other);
-    }
+
     internal struct SomeValueType : IComparable
     {
         private Int32 m_x;
-        public SomeValueType(Int32 x)
+        public SomeValueType(Int32 x) { m_x = x; }
+        public Int32 CompareTo(SomeValueType other)
         {
-            m_x = x;
+            return (m_x - other.m_x);
         }
-
-        public Int32 CompareTo(Object other)
+        // ПРИМЕЧАНИЕ: в следующей строке не используется public/private
+        Int32 IComparable.CompareTo(Object other)
         {
-            return (m_x - ((SomeValueType)other).m_x);
+            return CompareTo((SomeValueType)other);
         }
     }
 }
