@@ -6,60 +6,29 @@ public static class Program
 {
     public static void Main()
     {
-        Number n = new Number();
-        // Значение n сравнивается со значением 5 типа Int32
-        IComparable<Int32> c = n;
-        Int32 result = c.CompareTo(5);
-        Console.WriteLine(result);
-        // Значение n сравнивается со значением "5" типа String
-        IComparable<String> cString = n;
-        result = cString.CompareTo("5");
-        Console.WriteLine(result);
     }
 
-    // Этот класс реализует обобщенный интерфейс IComparable<T> дважды
-    public sealed class Number : IComparable<Int32>, IComparable<String>
+    public static class SomeType
     {
-        private Int32 m_val = 5;
-        // Этот метод реализует метод CompareTo интерфейса IComparable<Int32>
-        public Int32 CompareTo(Int32 n)
+        private static void Test()
         {
-            return m_val.CompareTo(n);
+            Int32 x = 5;
+            Guid g = new Guid();
+            // Компиляция этого вызова M выполняется без проблем,
+            // поскольку Int32 реализует и IComparable, и IConvertible
+            M(x);
+            // Компиляция этого вызова M приводит к ошибке, поскольку
+            // Guid реализует IComparable, но не реализует IConvertible
+            M(g);
         }
-        // Этот метод реализует метод CompareTo интерфейса IComparable<String>
-        public Int32 CompareTo(String s)
+        // Параметр T типа M ограничивается только теми типами,
+        // которые реализуют оба интерфейса: IComparable И IConvertible
+        private static Int32 M<T>(T t) where T : IComparable, IConvertible
         {
-            return m_val.CompareTo(Int32.Parse(s));
+            return 0;
         }
     }
 
-    public sealed class SomeType
-    {
-        private void SomeMethod1()
-        {
-            Int32 x = 1, y = 2;
-            IComparable c = x;
-            // CompareTo ожидает Object,
-            // но вполне допустимо передать переменную y типа Int32
-            c.CompareTo(y); // Выполняется упаковка
-            // CompareTo ожидает Object,
-            // при передаче "2" (тип String) компиляция выполняется нормально,
-            // но во время выполнения генерируется исключение ArgumentException
-            c.CompareTo("2");
-        }
-        private void SomeMethod2()
-        {
-            Int32 x = 1, y = 2;
-            IComparable<Int32> c = x;
-            // CompareTo ожидает Object,
-            // но вполне допустимо передать переменную y типа Int32
-            c.CompareTo(y); // Выполняется упаковка
-            // CompareTo ожидает Int32,
-            // передача "2" (тип String) приводит к ошибке компиляции
-            // с сообщением о невозможности привести тип String к Int32
-        //    c.CompareTo("2"); // Ошибка
-        }
-    }
 
 }
 
