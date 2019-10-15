@@ -4,34 +4,40 @@ using System.Collections.Generic;
 
 public static class Program
 {
+    internal sealed class SimpleType : IDisposable
+    {
+        public void Dispose()
+        {
+            Console.WriteLine("public Dispose");
+        }
+        void IDisposable.Dispose()
+        {
+            Console.WriteLine("IDisposable Dispose");
+        }
+
+    }
+    internal sealed class SimpleType1 : IDisposable
+    {
+        public void Dispose()
+        {
+            Console.WriteLine("Dispose");
+        }
+    }
     public static void Main()
     {
-        // Переменная s ссылается на объект String
-        String s = "Jeffrey";
-        // Используя переменную s, можно вызывать любой метод,
-        // определенный в String, Object, IComparable, ICloneable,
-        // IConvertible, IEnumerable, IComparable<String>,
-        //IEnumerable<Char> и IEquatable<String>
+        SimpleType st = new SimpleType();
+        // Вызов реализации открытого метода Dispose
+        st.Dispose();
+        // Вызов реализации метода Dispose интерфейса IDisposable
+        IDisposable disposable = st;
+        disposable.Dispose();
 
-        // Переменная cloneable ссылается на тот же объект String
-        ICloneable cloneable = s;
-        // Используя переменную cloneable, я могу вызвать любой метод,
-        // объявленный только в интерфейсе ICloneable (или любой метод,
-        // определенный в типе Object)
-
-        // Переменная comparable ссылается на тот же объект String
-        IComparable comparable = s;
-        // Используя переменную comparable, я могу вызвать любой метод,
-        // объявленный только в интерфейсе IComparable (или любой метод,
-        // определенный в типе Object)
-
-        // Переменная enumerable ссылается на тот же объект String
-        // Во время выполнения можно приводить интерфейсную переменную
-        // к интерфейсу другого типа, если тип объекта реализует оба интерфейса
-        IEnumerable enumerable = (IEnumerable)comparable;
-        // Используя переменную enumerable, я могу вызывать любой метод,
-        // объявленный только в интерфейсе IEnumerable (или любой метод,
-        // определенный только в типе Object)
+        SimpleType1 st1 = new SimpleType1();
+        // Вызов реализации открытого метода Dispose
+        st1.Dispose();
+        // Вызов реализации метода Dispose интерфейса IDisposable
+        IDisposable disposable1 = st1;
+        disposable1.Dispose();
 
     }
 }
