@@ -1,49 +1,38 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
 public static class Program
 {
     public static void Main()
     {
-        /************************* Первый пример *************/
-        Base b = new Base();
-        // Console.WriteLine("Вызов реализации Dispose в типе b: Dispose класса Base"); 
-        b.Dispose();
-        // Console.WriteLine("Вызов реализации Dispose в типе объекта b: Dispose класса Base");
-        ((IDisposable)b).Dispose();
-        /************************* Второй пример ************************/
-        Derived d = new Derived();
-        // Console.WriteLine("Вызов реализации Dispose в типе d: Dispose класса Derived"); 
-        d.Dispose();
-        // Console.WriteLine("Вызов реализации Dispose в типе объекта d: Dispose класса Derived"); 
-        ((IDisposable)d).Dispose();
-        /************************* Третий пример *************************/
-        b = new Derived();
-        // Console.WriteLine("Вызов реализации Dispose в типе b: Dispose класса Base");
-        b.Dispose();
-        // Console.WriteLine("Вызов реализации Dispose в типе объекта b: Dispose класса Derived"); 
-        ((IDisposable)b).Dispose();
+        // Переменная s ссылается на объект String
+        String s = "Jeffrey";
+        // Используя переменную s, можно вызывать любой метод,
+        // определенный в String, Object, IComparable, ICloneable,
+        // IConvertible, IEnumerable, IComparable<String>,
+        //IEnumerable<Char> и IEquatable<String>
+
+        // Переменная cloneable ссылается на тот же объект String
+        ICloneable cloneable = s;
+        // Используя переменную cloneable, я могу вызвать любой метод,
+        // объявленный только в интерфейсе ICloneable (или любой метод,
+        // определенный в типе Object)
+
+        // Переменная comparable ссылается на тот же объект String
+        IComparable comparable = s;
+        // Используя переменную comparable, я могу вызвать любой метод,
+        // объявленный только в интерфейсе IComparable (или любой метод,
+        // определенный в типе Object)
+
+        // Переменная enumerable ссылается на тот же объект String
+        // Во время выполнения можно приводить интерфейсную переменную
+        // к интерфейсу другого типа, если тип объекта реализует оба интерфейса
+        IEnumerable enumerable = (IEnumerable)comparable;
+        // Используя переменную enumerable, я могу вызывать любой метод,
+        // объявленный только в интерфейсе IEnumerable (или любой метод,
+        // определенный только в типе Object)
+
     }
 }
 
-// Этот класс является производным от Object и реализует IDisposable
-internal class Base : IDisposable
-{
-    // Этот метод неявно запечатан и его нельзя переопределить
-    public void Dispose()
-    {
-        Console.WriteLine("Base's Dispose");
-    }
-}
-// Этот класс наследует от Base и повторно реализует IDisposable
-internal class Derived : Base, IDisposable
-{
-    // Этот метод не может переопределить Dispose из Base.
-    // Ключевое слово 'new' указывает на то, что этот метод
-    // повторно реализует метод Dispose интерфейса IDisposable
-    new public void Dispose()
-    {
-        Console.WriteLine("Derived's Dispose)");
-        // ПРИМЕЧАНИЕ: следующая строка кода показывает,
-        // как вызвать реализацию базового класса (если нужно)s
-        //base.Dispose(); 
-    }
-}
