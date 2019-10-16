@@ -6,25 +6,32 @@ public static class Program
 {
     public static void Main()
     {
-        SomeValueType v = new SomeValueType(0);
-        IComparable c = v; // Упаковка!
-        Object o = new Object();
-        Int32 n = c.CompareTo(v); // Нежелательная упаковка
-        n = c.CompareTo(o); // Исключение InvalidCastException
-    }
+        Int32 x = 5;
+        //   Single s = x.ToSingle(null); // Попытка вызвать метод
+        // интерфейса IConvertible
 
-    internal struct SomeValueType : IComparable
+        Single s = ((IConvertible)x).ToSingle(null);
+
+    }
+    internal class Base : IComparable
     {
-        private Int32 m_x;
-        public SomeValueType(Int32 x) { m_x = x; }
-        public Int32 CompareTo(SomeValueType other)
+        // Явная реализация интерфейсного метода (EIMI)
+        Int32 IComparable.CompareTo(object obj)
         {
-            return (m_x - other.m_x);
+            Console.WriteLine(("Base's CompareTo"));
+            return 0;
         }
-        // ПРИМЕЧАНИЕ: в следующей строке не используется public/private
-        Int32 IComparable.CompareTo(Object other)
+    }
+    internal sealed class Derived : Base, IComparable
+    {
+        // Открытый метод, также являющийся реализацией интерфейса
+        public Int32 CompareTo(object obj)
         {
-            return CompareTo((SomeValueType)other);
+            Console.WriteLine("Derived's CompareTo");
+            // Эта попытка вызвать EIMI базового класса приводит к ошибке:
+            // "error CS0117: 'Base' does not contain a definition for 'CompareTo'"
+           // base.CompareTo();
+            return 0;
         }
     }
 }
