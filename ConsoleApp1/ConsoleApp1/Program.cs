@@ -28,9 +28,11 @@ public static class Program
         public Int32 CompareTo(object obj)
         {
             Console.WriteLine("Derived's CompareTo");
-            // Эта попытка вызвать EIMI базового класса приводит к ошибке:
-            // "error CS0117: 'Base' does not contain a definition for 'CompareTo'"
-           // base.CompareTo();
+
+            // Эта попытка вызова EIMI базового класса приводит
+            // к бесконечной рекурсии
+            IComparable c = this;
+            c.CompareTo(obj);
             return 0;
         }
     }
