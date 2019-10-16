@@ -19,21 +19,25 @@ public static class Program
         Int32 IComparable.CompareTo(object obj)
         {
             Console.WriteLine(("Base's CompareTo"));
+            return CompareTo(obj); // Теперь здесь вызывается виртуальный метод
+        }
+        // Виртуальный метод для производных классов
+        // (этот метод может иметь любое имя)
+        public virtual Int32 CompareTo(Object obj)
+        {
+            Console.WriteLine("Base's virtual CompareTo");
             return 0;
         }
     }
     internal sealed class Derived : Base, IComparable
     {
         // Открытый метод, также являющийся реализацией интерфейса
-        public Int32 CompareTo(object obj)
+        public override Int32 CompareTo(object obj)
         {
             Console.WriteLine("Derived's CompareTo");
-
             // Эта попытка вызова EIMI базового класса приводит
             // к бесконечной рекурсии
-            IComparable c = this;
-            c.CompareTo(obj);
-            return 0;
+            return base.CompareTo(obj);
         }
     }
 }
