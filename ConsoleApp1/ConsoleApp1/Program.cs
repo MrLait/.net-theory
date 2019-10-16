@@ -1,26 +1,23 @@
 ﻿using System;
+using System.Globalization;
 
 public static class Program
 {
     public static void Main()
     {
 
-        String s = new String("Hi there."); //Ошибка
-        //Вместо этого используется более простой синтаксис:
-        String s1 = "Hi there";
-        // String содержит символы конца строки и перевода каретки
-        String s2 = "Hi\r\nthere.";
-        //Чтобы приведенный код работал на любой платформе,
-        String s3 = "Hi" + Environment.NewLine + "there.";
-        // Конкатенация трех литеральных строк образует одну литеральную строку
-        String s4 = "Hi" + " " + "there.";
-        // Задание пути к приложению
-        String file = "C:\\Windows\\System32\\Notepad.exe";
-        // Задание пути к приложению с помощью буквальной строки
-        String file1 = @"C:\Windows\System32\Notepad.exe";
-        if (file.Substring(10, 21).EndsWith("EXE"))
-        {
-        }
+        Boolean Equals(String value, StringComparison comparisonType)
+        static Boolean Equals(String a, String b, StringComparison comparisonType)
+        static Int32 Compare(String strA, String strB, StringComparison comparisonType)
+        static Int32 Compare(string strA, string strB, Boolean ignoreCase, CultureInfo culture)
+        static Int32 Compare(String strA, String strB, CultureInfo culture, CompareOptions options)
+        static Int32 Compare(String strA, Int32 indexA, String strB, Int32 indexB, Int32 length, StringComparison comparisonType)
+        static Int32 Compare(String strA, Int32 indexA, String strB, Int32 indexB, Int32 length, CultureInfo culture, CompareOptions options)
+        static Int32 Compare(String strA, Int32 indexA, String strB, Int32 indexB, Int32 length, Boolean ignoreCase, CultureInfo culture)
+        Boolean StartsWith(String value, StringComparison comparisonType)
+        Boolean StartsWith(String value, Boolean ignoreCase, CultureInfo culture)
+        Boolean EndsWith(String value, StringComparison comparisonType)
+        Boolean EndsWith(String value, Boolean ignoreCase, CultureInfo culture)
     }
 }
 
