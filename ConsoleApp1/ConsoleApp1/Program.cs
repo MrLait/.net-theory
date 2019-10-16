@@ -1,43 +1,25 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 public static class Program
 {
     public static void Main()
     {
-        Int32 x = 5;
-        //   Single s = x.ToSingle(null); // Попытка вызвать метод
-        // интерфейса IConvertible
 
-        Single s = ((IConvertible)x).ToSingle(null);
-
-    }
-    internal class Base : IComparable
-    {
-        // Явная реализация интерфейсного метода (EIMI)
-        Int32 IComparable.CompareTo(object obj)
+        String s = new String("Hi there."); //Ошибка
+        //Вместо этого используется более простой синтаксис:
+        String s1 = "Hi there";
+        // String содержит символы конца строки и перевода каретки
+        String s2 = "Hi\r\nthere.";
+        //Чтобы приведенный код работал на любой платформе,
+        String s3 = "Hi" + Environment.NewLine + "there.";
+        // Конкатенация трех литеральных строк образует одну литеральную строку
+        String s4 = "Hi" + " " + "there.";
+        // Задание пути к приложению
+        String file = "C:\\Windows\\System32\\Notepad.exe";
+        // Задание пути к приложению с помощью буквальной строки
+        String file1 = @"C:\Windows\System32\Notepad.exe";
+        if (file.Substring(10, 21).EndsWith("EXE"))
         {
-            Console.WriteLine(("Base's CompareTo"));
-            return CompareTo(obj); // Теперь здесь вызывается виртуальный метод
-        }
-        // Виртуальный метод для производных классов
-        // (этот метод может иметь любое имя)
-        public virtual Int32 CompareTo(Object obj)
-        {
-            Console.WriteLine("Base's virtual CompareTo");
-            return 0;
-        }
-    }
-    internal sealed class Derived : Base, IComparable
-    {
-        // Открытый метод, также являющийся реализацией интерфейса
-        public override Int32 CompareTo(object obj)
-        {
-            Console.WriteLine("Derived's CompareTo");
-            // Эта попытка вызова EIMI базового класса приводит
-            // к бесконечной рекурсии
-            return base.CompareTo(obj);
         }
     }
 }
