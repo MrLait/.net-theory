@@ -1,34 +1,55 @@
 ﻿using System;
 using System.Text;
 using System.Globalization;
-using System.Threading;
 
 public static class Program
 {
     public static void Main()
     {
-        String s1 = "Hello";
-        String s2 = "Hello";
-       //true т.к стоит флаг по умолчанию интернировать
-        Console.WriteLine(Object.ReferenceEquals(s1,s2));
-
-        s1 = String.Intern(s1); //явное интернирование
-        s2 = String.Intern(s2); //явное интернирование
-        Console.WriteLine(Object.ReferenceEquals(s1,s2));
+        // Следующая строка содержит комбинированные символы
+        String s = "a\u0304\u0308bc\u0327";
+        SubstringByTextElements(s);
+        EnumTextElements(s);
+        EnumTextElementIndexes(s);
     }
-    private static Int32 NumTimesWordAppearsIntern(String word, String[]
- wordlist)
+
+    private static void EnumTextElementIndexes(string s)
     {
-        // В этом методе предполагается, что все элементы в wordlist
-        // ссылаются на интернированные строки
-        word = String.Intern(word);
-        Int32 count = 0;
-        for (Int32 wordnum = 0; wordnum < wordlist.Length; wordnum++)
+        String output = String.Empty;
+        Int32[] textElementIndex = StringInfo.ParseCombiningCharacters(s);
+        for (Int32 i = 0; i < textElementIndex.Length; i++)
         {
-            if (Object.ReferenceEquals(word, wordlist[wordnum]))
-                count++;
+            output += String.Format(
+            "Character {0} starts at index {1}{2}",
+            i, textElementIndex[i], Environment.NewLine);
         }
-        return count;
+        Console.WriteLine(output);
+    }
+
+    private static void EnumTextElements(string s)
+    {
+        String output = String.Empty;
+        TextElementEnumerator charEnum = StringInfo.GetTextElementEnumerator(s);
+        while (charEnum.MoveNext())
+        {
+            output += String.Format(
+                "Character at index {0} is '{1}'{2}",
+                charEnum.ElementIndex, charEnum.GetTextElement(),
+                Environment.NewLine);
+        }
+        Console.WriteLine(output);
+    }
+
+    private static void SubstringByTextElements(string s)
+    {
+        String output = String.Empty;
+
+        StringInfo si = new StringInfo(s);
+        for (Int32 element = 0; element < si.LengthInTextElements; element++)
+        {
+            output += String.Format("Text element {0} is '{1}'{2}", element, si.SubstringByTextElements(element, 1), Environment.NewLine);
+        }
+        Console.WriteLine(output);
     }
 }
 
