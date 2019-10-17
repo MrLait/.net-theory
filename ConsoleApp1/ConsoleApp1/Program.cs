@@ -1,44 +1,48 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
+using System.Security;
+using System.Runtime.InteropServices;
 public static class Program
 {
     public static void Main()
     {
-        Int32 x = 5;
-        //   Single s = x.ToSingle(null); // Попытка вызвать метод
-        // интерфейса IConvertible
-
-        Single s = ((IConvertible)x).ToSingle(null);
-
-    }
-    internal class Base : IComparable
-    {
-        // Явная реализация интерфейсного метода (EIMI)
-        Int32 IComparable.CompareTo(object obj)
+        using (SecureString ss = new SecureString())
         {
-            Console.WriteLine(("Base's CompareTo"));
-            return CompareTo(obj); // Теперь здесь вызывается виртуальный метод
+            Console.Write("Please enter password: ");
+            while (true)
+            {
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Enter) break;
+                // Присоединить символы пароля в конец SecureString
+                ss.AppendChar(cki.KeyChar);
+                Console.Write("*");
+            }
+            Console.WriteLine();
+            // Пароль введен, отобразим его для демонстрационных целей
+            DisplaySecureString(ss);
         }
-        // Виртуальный метод для производных классов
-        // (этот метод может иметь любое имя)
-        public virtual Int32 CompareTo(Object obj)
-        {
-            Console.WriteLine("Base's virtual CompareTo");
-            return 0;
-        }
+        // После 'using' SecureString обрабатывается методом Disposed,
+        // поэтому никаких конфиденциальных данных в памяти нет
     }
-    internal sealed class Derived : Base, IComparable
+
+    // Этот метод небезопасен, потому что обращается к неуправляемой памяти
+    private unsafe static void DisplaySecureString(SecureString ss)
     {
-        // Открытый метод, также являющийся реализацией интерфейса
-        public override Int32 CompareTo(object obj)
+        Char* pc = null;
+        try
         {
-            Console.WriteLine("Derived's CompareTo");
-            // Эта попытка вызова EIMI базового класса приводит
-            // к бесконечной рекурсии
-            return base.CompareTo(obj);
+            // Дешифрование SecureString в буфер неуправляемой памяти
+            pc = (Char*)Marshal.SecureStringToCoTaskMemUnicode(ss);
+            // Доступ к буферу неуправляемой памяти,
+            // который хранит дешифрованную версию SecureString
+            for (Int32 index = 0; pc[index] != 0; index++)
+                Console.Write(pc[index]);
+        }
+        finally
+        {
+            // Обеспечиваем обнуление и освобождение буфера неуправляемой памяти,
+            // который хранит расшифрованные символы SecureString
+            if (pc != null)
+                Marshal.ZeroFreeCoTaskMemUnicode((IntPtr)pc);
         }
     }
 }
-
