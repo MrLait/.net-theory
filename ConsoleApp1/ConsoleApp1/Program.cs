@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Text;
-using System.Globalization;
+using System.Threading;
 
 public static class Program
 {
     public static void Main()
     {
-        Decimal price = 123.54M;
-        String s = price.ToString("C", new CultureInfo("vi-VN"));
-        Console.WriteLine(String.Format("{0:C}",s));
-        String s1 = price.ToString("C", CultureInfo.InvariantCulture);
-        Console.WriteLine(s1);
-
-        String s2 = String.Format("On {0}, {1} is {2} years old.",
-            new DateTime(2012, 4, 22, 14, 35, 5), "Aidan", 9);
-        Console.WriteLine(s2);
-
-        String s3 = String.Format("On {0:D}, {1} is {2:E} years old.",
-            new DateTime(2012, 4, 22, 14, 35, 5), "Aidan", 9);
-        Console.WriteLine(s3);
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(new BoldInt32s(), "{0} {1} {2:M}", "Jeff", 123,
+ DateTime.Now);
+        Console.WriteLine(sb);
     }
-
 }
-
+internal sealed class BoldInt32s : IFormatProvider, ICustomFormatter
+{
+    public object GetFormat(Type formatType)
+    {
+        if (formatType == typeof(ICustomFormatter)) return this;
+        return Thread.CurrentThread.CurrentCulture.GetFormat(formatType);
+    }
+    public string Format(string format, object arg, IFormatProvider formatProvider)
+    {
+        string s;
+        IFormattable formattable = arg as IFormattable;
+        if (formattable == null) return arg.ToString();
+        else s = formattable.ToString(format, formatProvider);
+        if (arg.GetType() == typeof(Int32))
+            return "<B>" + s + "</B>";
+        return s;
+    }
+}
