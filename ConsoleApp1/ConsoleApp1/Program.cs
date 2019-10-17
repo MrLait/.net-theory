@@ -6,50 +6,30 @@ public static class Program
 {
     public static void Main()
     {
-        // Следующая строка содержит комбинированные символы
-        String s = "a\u0304\u0308bc\u0327";
-        SubstringByTextElements(s);
-        EnumTextElements(s);
-        EnumTextElementIndexes(s);
+        StringBuilder sb1 = new StringBuilder();
+        String s1 = sb1.AppendFormat("{0} {1}", "Jeffrey", "Richter").
+            Replace(' ', '-').Remove(4, 3).ToString();
+        Console.WriteLine(s1);
+
+        // Создаем StringBuilder для операций со строками
+        StringBuilder sb = new StringBuilder();
+        // Выполняем ряд действий со строками, используя StringBuilder
+        sb.AppendFormat("{0} {1}", "Jeffrey", "Richter").Replace(" ", "-");
+        // Преобразуем StringBuilder в String,
+        // чтобы сделать все символы прописными
+        String s = sb.ToString().ToUpper();
+        // Очищаем StringBuilder (выделяется память под новый массив Char)
+        sb.Length = 0;
+        // Загружаем строку с прописными String в StringBuilder
+        // и выполняем остальные операции
+        sb.Append(s).Insert(8, "Marc-");
+        // Преобразуем StringBuilder обратно в String
+        s = sb.ToString();
+        // Выводим String на экран для пользователя
+        Console.WriteLine(s); // "JEFFREY-Marc-RICHTER"
+
+
     }
 
-    private static void EnumTextElementIndexes(string s)
-    {
-        String output = String.Empty;
-        Int32[] textElementIndex = StringInfo.ParseCombiningCharacters(s);
-        for (Int32 i = 0; i < textElementIndex.Length; i++)
-        {
-            output += String.Format(
-            "Character {0} starts at index {1}{2}",
-            i, textElementIndex[i], Environment.NewLine);
-        }
-        Console.WriteLine(output);
-    }
-
-    private static void EnumTextElements(string s)
-    {
-        String output = String.Empty;
-        TextElementEnumerator charEnum = StringInfo.GetTextElementEnumerator(s);
-        while (charEnum.MoveNext())
-        {
-            output += String.Format(
-                "Character at index {0} is '{1}'{2}",
-                charEnum.ElementIndex, charEnum.GetTextElement(),
-                Environment.NewLine);
-        }
-        Console.WriteLine(output);
-    }
-
-    private static void SubstringByTextElements(string s)
-    {
-        String output = String.Empty;
-
-        StringInfo si = new StringInfo(s);
-        for (Int32 element = 0; element < si.LengthInTextElements; element++)
-        {
-            output += String.Format("Text element {0} is '{1}'{2}", element, si.SubstringByTextElements(element, 1), Environment.NewLine);
-        }
-        Console.WriteLine(output);
-    }
 }
 
