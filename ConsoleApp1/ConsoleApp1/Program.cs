@@ -6,29 +6,19 @@ public static class Program
 {
     public static void Main()
     {
-        StringBuilder sb1 = new StringBuilder();
-        String s1 = sb1.AppendFormat("{0} {1}", "Jeffrey", "Richter").
-            Replace(' ', '-').Remove(4, 3).ToString();
+        Decimal price = 123.54M;
+        String s = price.ToString("C", new CultureInfo("vi-VN"));
+        Console.WriteLine(String.Format("{0:C}",s));
+        String s1 = price.ToString("C", CultureInfo.InvariantCulture);
         Console.WriteLine(s1);
 
-        // Создаем StringBuilder для операций со строками
-        StringBuilder sb = new StringBuilder();
-        // Выполняем ряд действий со строками, используя StringBuilder
-        sb.AppendFormat("{0} {1}", "Jeffrey", "Richter").Replace(" ", "-");
-        // Преобразуем StringBuilder в String,
-        // чтобы сделать все символы прописными
-        String s = sb.ToString().ToUpper();
-        // Очищаем StringBuilder (выделяется память под новый массив Char)
-        sb.Length = 0;
-        // Загружаем строку с прописными String в StringBuilder
-        // и выполняем остальные операции
-        sb.Append(s).Insert(8, "Marc-");
-        // Преобразуем StringBuilder обратно в String
-        s = sb.ToString();
-        // Выводим String на экран для пользователя
-        Console.WriteLine(s); // "JEFFREY-Marc-RICHTER"
+        String s2 = String.Format("On {0}, {1} is {2} years old.",
+            new DateTime(2012, 4, 22, 14, 35, 5), "Aidan", 9);
+        Console.WriteLine(s2);
 
-
+        String s3 = String.Format("On {0:D}, {1} is {2:E} years old.",
+            new DateTime(2012, 4, 22, 14, 35, 5), "Aidan", 9);
+        Console.WriteLine(s3);
     }
 
 }
