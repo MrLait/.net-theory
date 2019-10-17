@@ -6,27 +6,13 @@ public static class Program
 {
     public static void Main()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.AppendFormat(new BoldInt32s(), "{0} {1} {2:M}", "Jeff", 123,
- DateTime.Now);
-        Console.WriteLine(sb);
-    }
-}
-internal sealed class BoldInt32s : IFormatProvider, ICustomFormatter
-{
-    public object GetFormat(Type formatType)
-    {
-        if (formatType == typeof(ICustomFormatter)) return this;
-        return Thread.CurrentThread.CurrentCulture.GetFormat(formatType);
-    }
-    public string Format(string format, object arg, IFormatProvider formatProvider)
-    {
-        string s;
-        IFormattable formattable = arg as IFormattable;
-        if (formattable == null) return arg.ToString();
-        else s = formattable.ToString(format, formatProvider);
-        if (arg.GetType() == typeof(Int32))
-            return "<B>" + s + "</B>";
-        return s;
+        //System.FormatException
+        //Int32 x = Int32.Parse(" 123", System.Globalization.NumberStyles.None, null);
+
+        Int32 x = Int32.Parse(" 123", System.Globalization.NumberStyles.AllowLeadingWhite, null);
+        Console.WriteLine(x);
+        //Вот пример синтаксического разбора строки шестнадцатеричного числа:
+        Int32 x1 = Int32.Parse("1A", System.Globalization.NumberStyles.HexNumber, null);
+        Console.WriteLine(x1); // Отображает "26".
     }
 }
