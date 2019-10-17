@@ -1,50 +1,48 @@
 ﻿using System;
-using System.Text;
+using System.Security;
+using System.Runtime.InteropServices;
 public static class Program
 {
     public static void Main()
     {
-        // Кодируемая строка
-        String s = "Hi there.";
-        // Получаем объект, производный от Encoding, который "умеет" выполнять
-        // кодирование и декодирование с использованием UTF-8
-        Encoding encodingUTF8 = Encoding.UTF8;
-        // Выполняем кодирование строки в массив байтов
-        Byte[] encodedBytes = encodingUTF8.GetBytes(s);
-        // Показываем значение закодированных байтов
-        Console.WriteLine("Encoded bytes: " +
-        BitConverter.ToString(encodedBytes));
-        // Выполняем декодирование массива байтов обратно в строку
-        String decodedString = encodingUTF8.GetString(encodedBytes);
-        // Показываем декодированную строку
-        Console.WriteLine("Decoded string: " + decodedString);
-
-        foreach (EncodingInfo ei in Encoding.GetEncodings())
+        using (SecureString ss = new SecureString())
         {
-            Encoding e = ei.GetEncoding();
-            Console.WriteLine("{1}{0}" +
-            "\tCodePage={2}, WindowsCodePage={3}{0}" +
-            "\tWebName={4}, HeaderName={5}, BodyName={6}{0}" +
-            "\tIsBrowserDisplay={7}, IsBrowserSave={8}{0}" +
-            "\tIsMailNewsDisplay={9}, IsMailNewsSave={10}{0}",
-            Environment.NewLine,
-            e.EncodingName, e.CodePage, e.WindowsCodePage,
-            e.WebName, e.HeaderName, e.BodyName,
-            e.IsBrowserDisplay, e.IsBrowserSave,
-            e.IsMailNewsDisplay, e.IsMailNewsSave);
+            Console.Write("Please enter password: ");
+            while (true)
+            {
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Enter) break;
+                // Присоединить символы пароля в конец SecureString
+                ss.AppendChar(cki.KeyChar);
+                Console.Write("*");
+            }
+            Console.WriteLine();
+            // Пароль введен, отобразим его для демонстрационных целей
+            DisplaySecureString(ss);
         }
+        // После 'using' SecureString обрабатывается методом Disposed,
+        // поэтому никаких конфиденциальных данных в памяти нет
+    }
 
-        // Получаем набор из 10 байт, сгенерированных случайным образом
-        Byte[] bytes = new Byte[10];
-        new Random().NextBytes(bytes);
-        // Отображаем байты
-        Console.WriteLine(BitConverter.ToString(bytes));
-        // Декодируем байты в строку в кодировке base-64 и выводим эту строку
-        String s1 = Convert.ToBase64String(bytes);
-        Console.WriteLine(s1);
-        // Кодируем строку в кодировке base-64 обратно в байты и выводим их
-        bytes = Convert.FromBase64String(s1);
-        Console.WriteLine(BitConverter.ToString(bytes));
-
+    // Этот метод небезопасен, потому что обращается к неуправляемой памяти
+    private unsafe static void DisplaySecureString(SecureString ss)
+    {
+        Char* pc = null;
+        try
+        {
+            // Дешифрование SecureString в буфер неуправляемой памяти
+            pc = (Char*)Marshal.SecureStringToCoTaskMemUnicode(ss);
+            // Доступ к буферу неуправляемой памяти,
+            // который хранит дешифрованную версию SecureString
+            for (Int32 index = 0; pc[index] != 0; index++)
+                Console.Write(pc[index]);
+        }
+        finally
+        {
+            // Обеспечиваем обнуление и освобождение буфера неуправляемой памяти,
+            // который хранит расшифрованные символы SecureString
+            if (pc != null)
+                Marshal.ZeroFreeCoTaskMemUnicode((IntPtr)pc);
+        }
     }
 }
