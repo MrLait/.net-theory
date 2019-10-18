@@ -3,10 +3,10 @@ using System.IO;
 using System.Reflection;
 public static class Program
 {
-    //[Flags] // Компилятор C# допускает значение "Flags" или "FlagsAttribute"
+    [Flags] // Компилятор C# допускает значение "Flags" или "FlagsAttribute"
     internal enum Actions
     {
-        None = 0
+        None = 0,
         Read = 0x0001,
         Write = 0x0002,
         ReadWrite = Actions.Read | Actions.Write,
@@ -17,16 +17,16 @@ public static class Program
 
     public static void Main()
     {
-        String file = Assembly.GetEntryAssembly().Location;
-        FileAttributes attributes = File.GetAttributes(file);
-        Console.WriteLine("Is {0} hidden? {1}", file, (
-         attributes & FileAttributes.Hidden) != 0);
-
-        //File.SetAttributes(file, FileAttributes.ReadOnly | FileAttributes.Hidden);
-
-        Actions actions = Actions.Read | Actions.Delete;
-        Console.WriteLine(actions.ToString()); // "Read, Delete"
-        Console.WriteLine(actions.ToString("F")); // "Read, Delete"
+        // Так как Query определяется как 8, 'a' получает начальное значение 8
+        Actions a = (Actions)Enum.Parse(typeof(Actions), "Query", true);
+        Console.WriteLine(a.ToString()); // "Query"
+                                         // Так как у нас определены и Query, и Read, 'a' получает
+                                         // начальное значение 9
+        Enum.TryParse<Actions>("Query, Read", false, out a);
+        Console.WriteLine(a.ToString()); // "Read, Query"
+                                         // Создаем экземпляр перечисления Actions enum со значением 28
+        a = (Actions)Enum.Parse(typeof(Actions), "28", false);
+        Console.WriteLine(a.ToString()); // "Delete, Query, Sync"
     }
 
 }
