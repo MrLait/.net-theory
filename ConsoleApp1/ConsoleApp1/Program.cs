@@ -5,16 +5,26 @@ public static class Program
 {
     public static void Main()
     {
-        // Создание одномерного массива из массивов типа Point
-        Point[][] myPolygons = new Point[3][];
-        // myPolygons[0] ссылается на массив из 10 экземпляров типа Point
-        myPolygons[0] = new Point[10];
-        // myPolygons[1] ссылается на массив из 10 экземпляров типа Point
-        myPolygons[1] = new Point[20];
-        // myPolygons[3] ссылается на массив из 10 экземпляров типа Point
-        myPolygons[2] = new Point[30];
-        // вывод точек первого многоугольника
-        for (Int32 x = 0; x < myPolygons[0].Length; x++)
-            Console.WriteLine(myPolygons[0][x]);
+        String[] names = new String[] {"Aidan", "Grant" };
+        // Использование локальной переменной неявного типа:
+        var names1 = new String[] { "Aidan", "Grant" };
+        var names2 = new[] { "Aidan", "Grant", null };
+
+        // Ошибочное задание типа массива с помощью локальной
+        // переменной неявного типа
+        //var names3 = new[] { "Aidan", "Grant", 123 };
+
+        String[] names4 = { "Aidan", "Grant" };
+        // Ошибочное использование локальной переменной
+        //var names5 = { "Aidan", "Grant" };
+
+        // Применение переменных и массивов неявно заданного типа,
+        // а также анонимного типа:
+        var kids = new[] { new { Name = "Aidan" }, new { Name = "Grant" } };
+        // Пример применения (с другой локальной переменной неявно заданного типа):
+        foreach (var kid in kids)
+        {
+            Console.WriteLine(kid.Name);
+        }
     }
 }
