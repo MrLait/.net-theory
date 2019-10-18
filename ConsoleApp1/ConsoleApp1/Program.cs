@@ -1,32 +1,52 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
+
+internal static class FileAttributesExtensionMethods
+{
+    public static Boolean IsSet(this FileAttributes flags, FileAttributes flagToTest)
+    {
+        if (flagToTest == 0)
+            throw new ArgumentOutOfRangeException("flagToTest", "Value must not be 0");
+        return (flags & flagToTest) == flagToTest;
+    }
+    public static Boolean IsClear(this FileAttributes flags, FileAttributes flagToTest)
+    {
+        if (flagToTest == 0)
+            throw new ArgumentOutOfRangeException("flagToTest", "Value must not be 0");
+        return !IsSet(flags, flagToTest);
+    }
+    public static Boolean AnyFlagsSet(this FileAttributes flags, FileAttributes testFlags)
+    {
+        return ((flags & testFlags) != 0);
+    }
+    public static FileAttributes Set(this FileAttributes flags, FileAttributes setFlags)
+    {
+        return flags | setFlags;
+    }
+    public static FileAttributes Clear(this FileAttributes flags, FileAttributes clearFlags)
+    {
+        return flags & ~clearFlags;
+    }
+    public static void ForEach(this FileAttributes flags, Action<FileAttributes> processFlag)
+    {
+        if (processFlag == null) 
+            throw new ArgumentNullException("processFlag");
+        for (UInt32 bit = 1; bit != 0; bit <<= 1)
+        {
+            UInt32 temp = ((UInt32)flags) & bit;
+            if (temp != 0) processFlag((FileAttributes)temp);
+        }
+    }
+}
 public static class Program
 {
-    [Flags] // Компилятор C# допускает значение "Flags" или "FlagsAttribute"
-    internal enum Actions
-    {
-        None = 0,
-        Read = 0x0001,
-        Write = 0x0002,
-        ReadWrite = Actions.Read | Actions.Write,
-        Delete = 0x0004,
-        Query = 0x0008,
-        Sync = 0x0010
-    }
-
+    
     public static void Main()
     {
-        // Так как Query определяется как 8, 'a' получает начальное значение 8
-        Actions a = (Actions)Enum.Parse(typeof(Actions), "Query", true);
-        Console.WriteLine(a.ToString()); // "Query"
-                                         // Так как у нас определены и Query, и Read, 'a' получает
-                                         // начальное значение 9
-        Enum.TryParse<Actions>("Query, Read", false, out a);
-        Console.WriteLine(a.ToString()); // "Read, Query"
-                                         // Создаем экземпляр перечисления Actions enum со значением 28
-        a = (Actions)Enum.Parse(typeof(Actions), "28", false);
-        Console.WriteLine(a.ToString()); // "Delete, Query, Sync"
+        FileAttributes fa = FileAttributes.System;
+        fa = fa.Set(FileAttributes.ReadOnly);
+        fa = fa.Clear(FileAttributes.System);
+        fa.ForEach(f => Console.WriteLine(f));
     }
 
 }
