@@ -1,48 +1,52 @@
 ﻿using System;
-using System.Security;
-using System.Runtime.InteropServices;
+using System.IO;
+
+internal static class FileAttributesExtensionMethods
+{
+    public static Boolean IsSet(this FileAttributes flags, FileAttributes flagToTest)
+    {
+        if (flagToTest == 0)
+            throw new ArgumentOutOfRangeException("flagToTest", "Value must not be 0");
+        return (flags & flagToTest) == flagToTest;
+    }
+    public static Boolean IsClear(this FileAttributes flags, FileAttributes flagToTest)
+    {
+        if (flagToTest == 0)
+            throw new ArgumentOutOfRangeException("flagToTest", "Value must not be 0");
+        return !IsSet(flags, flagToTest);
+    }
+    public static Boolean AnyFlagsSet(this FileAttributes flags, FileAttributes testFlags)
+    {
+        return ((flags & testFlags) != 0);
+    }
+    public static FileAttributes Set(this FileAttributes flags, FileAttributes setFlags)
+    {
+        return flags | setFlags;
+    }
+    public static FileAttributes Clear(this FileAttributes flags, FileAttributes clearFlags)
+    {
+        return flags & ~clearFlags;
+    }
+    public static void ForEach(this FileAttributes flags, Action<FileAttributes> processFlag)
+    {
+        if (processFlag == null) 
+            throw new ArgumentNullException("processFlag");
+        for (UInt32 bit = 1; bit != 0; bit <<= 1)
+        {
+            UInt32 temp = ((UInt32)flags) & bit;
+            if (temp != 0) processFlag((FileAttributes)temp);
+        }
+    }
+}
 public static class Program
 {
+    
     public static void Main()
     {
-        using (SecureString ss = new SecureString())
-        {
-            Console.Write("Please enter password: ");
-            while (true)
-            {
-                ConsoleKeyInfo cki = Console.ReadKey(true);
-                if (cki.Key == ConsoleKey.Enter) break;
-                // Присоединить символы пароля в конец SecureString
-                ss.AppendChar(cki.KeyChar);
-                Console.Write("*");
-            }
-            Console.WriteLine();
-            // Пароль введен, отобразим его для демонстрационных целей
-            DisplaySecureString(ss);
-        }
-        // После 'using' SecureString обрабатывается методом Disposed,
-        // поэтому никаких конфиденциальных данных в памяти нет
+        FileAttributes fa = FileAttributes.System;
+        fa = fa.Set(FileAttributes.ReadOnly);
+        fa = fa.Clear(FileAttributes.System);
+        fa.ForEach(f => Console.WriteLine(f));
     }
 
-    // Этот метод небезопасен, потому что обращается к неуправляемой памяти
-    private unsafe static void DisplaySecureString(SecureString ss)
-    {
-        Char* pc = null;
-        try
-        {
-            // Дешифрование SecureString в буфер неуправляемой памяти
-            pc = (Char*)Marshal.SecureStringToCoTaskMemUnicode(ss);
-            // Доступ к буферу неуправляемой памяти,
-            // который хранит дешифрованную версию SecureString
-            for (Int32 index = 0; pc[index] != 0; index++)
-                Console.Write(pc[index]);
-        }
-        finally
-        {
-            // Обеспечиваем обнуление и освобождение буфера неуправляемой памяти,
-            // который хранит расшифрованные символы SecureString
-            if (pc != null)
-                Marshal.ZeroFreeCoTaskMemUnicode((IntPtr)pc);
-        }
-    }
 }
