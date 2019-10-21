@@ -1,30 +1,99 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
+using System.Diagnostics;
 
 public static class Program
 {
-
+    private const Int32 c_numElements = 10000;
     public static void Main()
     {
-        // Требуется двухмерный массив [2005..2009][1..4]
-        Int32[] lowerBounds ={ 2005, 1 };
-        Int32[] lengths = { 5, 4 };
-        Decimal[,] quarterlyRevenue = (Decimal[,])Array.CreateInstance(typeof(Decimal), lengths, lowerBounds);
-        Console.WriteLine("{0,4} {1,5} {2,7} {3,7} {4,7}", "Year", "Q1", "Q2", "Q3", "Q4");
-        Int32 firstYear = quarterlyRevenue.GetLowerBound(0);
-        Int32 lastYear = quarterlyRevenue.GetUpperBound(0);
-        Int32 firstQuarter = quarterlyRevenue.GetLowerBound(1);
-        Int32 lastQuarter = quarterlyRevenue.GetUpperBound(1);
-        for (int year = firstYear; year <= lastYear; year++)
+        Array a;
+        // Создание одномерного массива с нулевым
+        // начальным индексом и без элементов
+        a = new String[0];
+        Console.WriteLine(a.GetType());// "System.String[]"
+
+        // Создание одномерного массива с нулевым
+        // начальным индексом и без элементов
+        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 0 });
+        Console.WriteLine(a.GetType()); // "System.String[]"
+        // Создание одномерного массива с начальным индексом 1 и без элементов
+        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 1 });
+        Console.WriteLine(a.GetType()); // "System.String[*]" <-- ВНИМАНИЕ!
+        Console.WriteLine();
+
+        // Создание двухмерного массива с нулевым
+        // начальным индексом и без элементов
+        a = new String[0,0];
+        Console.WriteLine(a.GetType()); // "System.String[,]"
+        // Создание двухмерного массива с нулевым
+        // начальным индексом и без элементов
+        a = Array.CreateInstance(typeof(String), new Int32[] { 0,0 }, new Int32[] { 0,0 });
+        Console.WriteLine(a.GetType()); // "System.String[,]"
+        // Создание двухмерного массива с начальным индексом 1 и без элементов
+        a = Array.CreateInstance(typeof(String), new Int32[] { 0, 0 }, new Int32[] { 1, 1 });
+        Console.WriteLine(a.GetType()); // "System.String[,]"
+
+        Int32[] b = new Int32[5];
+        for (Int32 index = 0; index < b.Length; index++)
         {
-            Console.Write(year + " ");
-            for (int quarter = firstQuarter; quarter <= lastQuarter; quarter++)
-            {
-                Console.Write("{0,7:C} ", quarterlyRevenue[year, quarter]);
-            }
-            Console.WriteLine();
+            // Какие-то действия с элементом b[index]
         }
 
+
+        // Объявление двухмерного массива
+        Int32[,] a2Dim = new Int32[c_numElements, c_numElements];
+        // Объявление нерегулярного двухмерного массива (вектор векторов)
+        Int32[][] aJagged = new Int32[c_numElements][];
+        for (int i = 0; i < c_numElements; i++)
+        {
+            aJagged[i] = new Int32[c_numElements];
+        }
+        // 1: Обращение к элементам стандартным, безопасным способом
+        Safe2DimArrayAccess(a2Dim);
+        // 2: Обращение к элементам с использованием нерегулярного массива
+        SafeJaggedArrayAccess(aJagged);
+        // 3: Обращение к элементам небезопасным методом
+        Unsafe2DimArrayAccess(a2Dim);
+
+    }
+    private static Int32 Safe2DimArrayAccess(Int32[,] a)
+    {
+        Int32 sum = 0;
+        for (int x = 0; x <c_numElements; x++)
+        {
+            for (int y = 0; y < c_numElements; y++)
+            {
+                sum += a[x, y];
+            }
+        }
+        return sum;
+    }
+    private static Int32 SafeJaggedArrayAccess(Int32[][] aJagged)
+    {
+        int sum = 0;
+        for (int x = 0; x < c_numElements; x++)
+        {
+            for (int y = 0; y < c_numElements; y++)
+            {
+                sum += aJagged[x][y];
+            }
+        }
+        return sum;
+    }
+    private static unsafe Int32 Unsafe2DimArrayAccess(Int32[,] a)
+    {
+        Int32 sum = 0;
+        fixed (Int32* pi = a)
+        {
+            for (Int32 x = 0; x < c_numElements; x++)
+            {
+                Int32 baseOfDim = x * c_numElements;
+                for (Int32 y = 0; y < c_numElements; y++)
+                {
+                    sum += pi[baseOfDim + y];
+                }
+            }
+        }
+        return sum;
     }
 }
