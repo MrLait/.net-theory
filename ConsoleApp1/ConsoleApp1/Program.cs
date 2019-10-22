@@ -1,99 +1,99 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Windows.Forms;
+using System.IO;
+// Объявление делегата; экземпляр ссылается на метод
+internal delegate void Feedback(Int32 value);
 
-public static class Program
+public sealed class Program
 {
-    private const Int32 c_numElements = 10000;
     public static void Main()
     {
-        Array a;
-        // Создание одномерного массива с нулевым
-        // начальным индексом и без элементов
-        a = new String[0];
-        Console.WriteLine(a.GetType());// "System.String[]"
+        StaticDelegateDemo();
+        InstanceDelegateDemo();
+        ChainDelegateDemo1(new Program());
+        ChainDelegateDemo2(new Program());
 
-        // Создание одномерного массива с нулевым
-        // начальным индексом и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 0 });
-        Console.WriteLine(a.GetType()); // "System.String[]"
-        // Создание одномерного массива с начальным индексом 1 и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 1 });
-        Console.WriteLine(a.GetType()); // "System.String[*]" <-- ВНИМАНИЕ!
+    }
+
+    private static void StaticDelegateDemo()
+    {
+        Console.WriteLine("--StaticDelegateDemo--");
+        Counter(1, 3, null);
+        Counter(1, 3, new Feedback(Program.FeedbackToConsole));
+        Counter(1, 3, new Feedback(FeedbackToMsgBox));
+    }
+
+
+    private static void InstanceDelegateDemo()
+    {
+        Console.WriteLine("----- Instance Delegate Demo -----");
+        Program p = new Program();
+        Counter(1, 3, new Feedback(p.FeedbackToFile));
+    }
+
+
+
+    private static void ChainDelegateDemo1(Program p)
+    {
+        Console.WriteLine("----- Chain Delegate Demo 1 -----");
+        Feedback fb1 = new Feedback(FeedbackToConsole);
+        Feedback fb2 = new Feedback(FeedbackToMsgBox);
+        Feedback fb3 = new Feedback(p.FeedbackToFile);
+
+        Feedback fbChain = null;
+        fbChain = (Feedback)Delegate.Combine(fbChain,fb1);
+        fbChain = (Feedback)Delegate.Combine(fbChain,fb2);
+        fbChain = (Feedback)Delegate.Combine(fbChain,fb3);
+        Counter(1, 2, fbChain);
+        
         Console.WriteLine();
+        fbChain = (Feedback)Delegate.Remove(fbChain, new Feedback(FeedbackToMsgBox));
+        Counter(1, 2, fbChain);
 
-        // Создание двухмерного массива с нулевым
-        // начальным индексом и без элементов
-        a = new String[0,0];
-        Console.WriteLine(a.GetType()); // "System.String[,]"
-        // Создание двухмерного массива с нулевым
-        // начальным индексом и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0,0 }, new Int32[] { 0,0 });
-        Console.WriteLine(a.GetType()); // "System.String[,]"
-        // Создание двухмерного массива с начальным индексом 1 и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0, 0 }, new Int32[] { 1, 1 });
-        Console.WriteLine(a.GetType()); // "System.String[,]"
+        Console.WriteLine();
+        fbChain -= new Feedback(FeedbackToMsgBox);
+        Counter(1, 2, fbChain);
 
-        Int32[] b = new Int32[5];
-        for (Int32 index = 0; index < b.Length; index++)
-        {
-            // Какие-то действия с элементом b[index]
-        }
-
-
-        // Объявление двухмерного массива
-        Int32[,] a2Dim = new Int32[c_numElements, c_numElements];
-        // Объявление нерегулярного двухмерного массива (вектор векторов)
-        Int32[][] aJagged = new Int32[c_numElements][];
-        for (int i = 0; i < c_numElements; i++)
-        {
-            aJagged[i] = new Int32[c_numElements];
-        }
-        // 1: Обращение к элементам стандартным, безопасным способом
-        Safe2DimArrayAccess(a2Dim);
-        // 2: Обращение к элементам с использованием нерегулярного массива
-        SafeJaggedArrayAccess(aJagged);
-        // 3: Обращение к элементам небезопасным методом
-        Unsafe2DimArrayAccess(a2Dim);
 
     }
-    private static Int32 Safe2DimArrayAccess(Int32[,] a)
+
+    private static void ChainDelegateDemo2(Program p)
     {
-        Int32 sum = 0;
-        for (int x = 0; x <c_numElements; x++)
-        {
-            for (int y = 0; y < c_numElements; y++)
-            {
-                sum += a[x, y];
-            }
-        }
-        return sum;
+        Console.WriteLine("----- Chain Delegate Demo 2 -----");
+        Feedback fb1 = new Feedback(FeedbackToConsole);
+        Feedback fb2 = new Feedback(FeedbackToMsgBox);
+        Feedback fb3 = new Feedback(p.FeedbackToFile);
+        Feedback fbChain = null;
+
+        
+        fbChain += fb1;
+        fbChain += fb2;
+        fbChain += fb3;
+        Counter(1, 2, fbChain);
     }
-    private static Int32 SafeJaggedArrayAccess(Int32[][] aJagged)
+    private static void Counter(Int32 from, Int32 to, Feedback fb)
     {
-        int sum = 0;
-        for (int x = 0; x < c_numElements; x++)
+        for (int val = from; val <= to; val++)
         {
-            for (int y = 0; y < c_numElements; y++)
-            {
-                sum += aJagged[x][y];
-            }
+            // Если указаны методы обратного вызова, вызываем их
+            if (fb != null)
+                fb(val);
         }
-        return sum;
     }
-    private static unsafe Int32 Unsafe2DimArrayAccess(Int32[,] a)
+    private static void FeedbackToConsole(Int32 value)
     {
-        Int32 sum = 0;
-        fixed (Int32* pi = a)
+        MessageBox.Show("Item" + value);
+    }
+
+    private static void FeedbackToMsgBox(Int32 value)
+    {
+        MessageBox.Show("Item" + value);
+    }
+    private void FeedbackToFile(Int32 value)
+    {
+        using (StreamWriter sw = new StreamWriter("Status", true))
         {
-            for (Int32 x = 0; x < c_numElements; x++)
-            {
-                Int32 baseOfDim = x * c_numElements;
-                for (Int32 y = 0; y < c_numElements; y++)
-                {
-                    sum += pi[baseOfDim + y];
-                }
-            }
+            sw.WriteLine("Item=" + value);
         }
-        return sum;
     }
 }
