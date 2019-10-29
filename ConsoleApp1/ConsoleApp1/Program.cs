@@ -1,71 +1,71 @@
 ﻿using System;
-using System.Text;
-internal sealed class Light
+using System.Threading;
+
+internal sealed class AClass1
 {
-    // Метод возвращает состояние объекта Light
-    public String SwitchPosition()
+    public static void CallbackWithoutNewingADelegateObject()
     {
-        return "The light is off";
+        ThreadPool.QueueUserWorkItem(SomeAsyncTask, 5);
+    }
+    private static void SomeAsyncTask(Object o)
+    {
+        Console.WriteLine(o);
     }
 }
-internal sealed class Fan
+internal sealed class AClass2
 {
-    public String Speed()
+    public static void CallbackWithoutNewingADelegateObject()
     {
-        throw new InvalidOperationException("The fan broke due to overheating");
+        ThreadPool.QueueUserWorkItem(obj => Console.WriteLine(obj), 5);
     }
 }
-internal sealed class Speaker
+internal sealed class AClass3
 {
-    public String Volume()
+    private static String sm_name; // Статическое поле
+    public static void CallbackWithoutNewingADelegateObject()
     {
-        return "The volume is loud";
+        ThreadPool.QueueUserWorkItem(
+        // Код обратного вызова может обращаться к статическим членам
+        obj => Console.WriteLine(sm_name + ": " + obj),
+        5);
+    }
+}
+internal sealed class AClass
+{
+    private String m_name; // Поле экземпляра
+                           // Метод экземпляра
+    public void CallbackWithoutNewingADelegateObject()
+    {
+        ThreadPool.QueueUserWorkItem(
+        // Код обратного вызова может ссылаться на члены экземпляра
+        obj => Console.WriteLine(m_name + ": " + obj),
+        5);
     }
 }
 public sealed class Program
 {
-    // Определение делегатов, позволяющих запрашивать состояние компонентов
-    private delegate String GetStatus();
+    //определение делегата
+    delegate void Bar(out Int32 z);
     public static void Main()
     {
-        // Объявление пустой цепочки делегатов
-        GetStatus getStatus = null;
-        // Создание трех компонентов и добавление в цепочку
-        // методов проверки их состояния
-        getStatus += new GetStatus(new Light().SwitchPosition);
-        getStatus += new GetStatus(new Fan().Speed);
-        getStatus += new GetStatus(new Speaker().Volume);
-        Console.WriteLine(GetComponentStatusReport(getStatus));
+        // Если делегат не содержит аргументов, используйте круглые скобки
+        Func<String> f = () => "Jeff";
+        // Для делегатов с одним и более аргументами
+        // можно в явном виде указать типы
+        Func<Int32, String> f2 = (Int32 n) => n.ToString();
+        Func<Int32, Int32, String> f3 = (Int32 n1, Int32 n2) => (n1 + n2).ToString();
+        // Компилятор может самостоятельно определить типы для делегатов
+        // с одним и более аргументами
+        Func<Int32, String> f4 = (n) => n.ToString();
+        Func<Int32, Int32, String> f5 = (n1, n2) => (n1 + n2).ToString();
+        // Если аргумент у делегата всего один, круглые скобки можно опустить
+        Func<Int32, String> f6 = n => n.ToString();
+        // Для аргументов ref/out нужно в явном виде указывать ref/out и тип
+        Bar b = (out Int32 n) => n = 5;
+
+        Func<Int32, Int32, String> f7 = (n1, n2) => {
+            Int32 sum = n1 + n2; return sum.ToString();
+        };
     }
-    private static String GetComponentStatusReport(GetStatus status)
-    {
-        // Если цепочка пуста, ничего делать не нужно
-        if (status == null) return null;
-        // Построение отчета о состоянии
-        StringBuilder report = new StringBuilder();
-        // Создание массива из делегатов цепочки
-        Delegate[] arrayOfDelegates = status.GetInvocationList();
-        // Циклическая обработка делегатов массива
-        foreach (GetStatus getStatus in arrayOfDelegates)
-        {
-            try
-            {
-                // Получение строки состояния компонента и добавление ее в отчет
-                report.AppendFormat("{0}{1}{1}", getStatus(), Environment.NewLine);
-            }
-            catch (InvalidOperationException e)
-            {
-                // В отчете генерируется запись об ошибке для этого компонента
-                Object component = getStatus.Target;
-                report.AppendFormat(
-                "Failed to get status from {1}{2}{0} Error: {3}{0}{0}",
-                Environment.NewLine,
-                ((component == null) ? "" : component.GetType() + "."),
-                getStatus.Method.Name,
-                e.Message);
-            }
-        }
-        // Возвращение сводного отчета вызывающему коду
-        return report.ToString();
-    }
+
 }
