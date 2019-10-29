@@ -1,99 +1,105 @@
 ﻿using System;
-using System.Diagnostics;
-
-public static class Program
+using System.Reflection;
+using System.IO;
+using System.Linq;
+// Несколько разных определений делегатов
+internal delegate Object TwoInt32s(Int32 n1, Int32 n2);
+internal delegate Object OneString(String s1);
+public static class DelegateReflection
 {
-    private const Int32 c_numElements = 10000;
-    public static void Main()
+    public static void Main(String[] args)
     {
-        Array a;
-        // Создание одномерного массива с нулевым
-        // начальным индексом и без элементов
-        a = new String[0];
-        Console.WriteLine(a.GetType());// "System.String[]"
-
-        // Создание одномерного массива с нулевым
-        // начальным индексом и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 0 });
-        Console.WriteLine(a.GetType()); // "System.String[]"
-        // Создание одномерного массива с начальным индексом 1 и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0 }, new Int32[] { 1 });
-        Console.WriteLine(a.GetType()); // "System.String[*]" <-- ВНИМАНИЕ!
-        Console.WriteLine();
-
-        // Создание двухмерного массива с нулевым
-        // начальным индексом и без элементов
-        a = new String[0,0];
-        Console.WriteLine(a.GetType()); // "System.String[,]"
-        // Создание двухмерного массива с нулевым
-        // начальным индексом и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0,0 }, new Int32[] { 0,0 });
-        Console.WriteLine(a.GetType()); // "System.String[,]"
-        // Создание двухмерного массива с начальным индексом 1 и без элементов
-        a = Array.CreateInstance(typeof(String), new Int32[] { 0, 0 }, new Int32[] { 1, 1 });
-        Console.WriteLine(a.GetType()); // "System.String[,]"
-
-        Int32[] b = new Int32[5];
-        for (Int32 index = 0; index < b.Length; index++)
+        if (args.Length < 2)
         {
-            // Какие-то действия с элементом b[index]
+            String usage =
+            @"Usage:" +
+            "{0} delType methodName [Arg1] [Arg2]" +
+            "{0} where delType must be TwoInt32s or OneString" +
+            "{0} if delType is TwoInt32s, methodName must be Add or Subtract" +
+            "{0} if delType is OneString, methodName must be NumChars or Reverse"
+           +
+            "{0}" +
+            "{0}Examples:" +
+            "{0} TwoInt32s Add 123 321" +
+            "{0} TwoInt32s Subtract 123 321" +
+            "{0} OneString NumChars \"Hello there\"" +
+            "{0} OneString Reverse \"Hello there\"";
+            Console.WriteLine(usage, Environment.NewLine);
+            return;
         }
 
-
-        // Объявление двухмерного массива
-        Int32[,] a2Dim = new Int32[c_numElements, c_numElements];
-        // Объявление нерегулярного двухмерного массива (вектор векторов)
-        Int32[][] aJagged = new Int32[c_numElements][];
-        for (int i = 0; i < c_numElements; i++)
+        // Преобразование аргумента delType в тип делегата
+        Type delType = Type.GetType(args[0]);
+        if (delType == null)
         {
-            aJagged[i] = new Int32[c_numElements];
+            Console.WriteLine("Invalid delType argument: " + args[0]);
+            return;
         }
-        // 1: Обращение к элементам стандартным, безопасным способом
-        Safe2DimArrayAccess(a2Dim);
-        // 2: Обращение к элементам с использованием нерегулярного массива
-        SafeJaggedArrayAccess(aJagged);
-        // 3: Обращение к элементам небезопасным методом
-        Unsafe2DimArrayAccess(a2Dim);
-
-    }
-    private static Int32 Safe2DimArrayAccess(Int32[,] a)
-    {
-        Int32 sum = 0;
-        for (int x = 0; x <c_numElements; x++)
+        Delegate d;
+        try
         {
-            for (int y = 0; y < c_numElements; y++)
+            // Преобразование аргумента Arg1 в метод
+            MethodInfo mi =
+            typeof(DelegateReflection).GetTypeInfo().GetDeclaredMethod(args[1]);
+            // Создание делегата, служащего оберткой статического метода
+            d = mi.CreateDelegate(delType);
+        }
+        catch (ArgumentException)
+        {
+            Console.WriteLine("Invalid methodName argument: " + args[1]);
+            return;
+        }
+        // Создание массива, содержащего аргументы,
+        // передаваемые методу через делегат
+        Object[] callbackArgs = new Object[args.Length - 2];
+        if (d.GetType() == typeof(TwoInt32s))
+        {
+            try
             {
-                sum += a[x, y];
+                // Преобразование аргументов типа String в тип Int32
+                for (Int32 a = 2; a < args.Length; a++)
+                    callbackArgs[a - 2] = Int32.Parse(args[a]);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Parameters must be integers.");
+                return;
             }
         }
-        return sum;
-    }
-    private static Int32 SafeJaggedArrayAccess(Int32[][] aJagged)
-    {
-        int sum = 0;
-        for (int x = 0; x < c_numElements; x++)
+        if (d.GetType() == typeof(OneString))
         {
-            for (int y = 0; y < c_numElements; y++)
-            {
-                sum += aJagged[x][y];
-            }
+            // Простое копирование аргумента типа String
+            Array.Copy(args, 2, callbackArgs, 0, callbackArgs.Length);
         }
-        return sum;
-    }
-    private static unsafe Int32 Unsafe2DimArrayAccess(Int32[,] a)
-    {
-        Int32 sum = 0;
-        fixed (Int32* pi = a)
+        try
         {
-            for (Int32 x = 0; x < c_numElements; x++)
-            {
-                Int32 baseOfDim = x * c_numElements;
-                for (Int32 y = 0; y < c_numElements; y++)
-                {
-                    sum += pi[baseOfDim + y];
-                }
-            }
+            // Вызов делегата и вывод результата
+            Object result = d.DynamicInvoke(callbackArgs);
+            Console.WriteLine("Result = " + result);
         }
-        return sum;
+        catch (TargetParameterCountException)
+        {
+            Console.WriteLine("Incorrect number of parameters specified.");
+        }
+    }
+    // Метод обратного вызова, принимающий два аргумента типа Int32
+    private static Object Add(Int32 n1, Int32 n2)
+    {
+        return n1 + n2;
+    }
+    // Метод обратного вызова, принимающий два аргумента типа Int32
+    private static Object Subtract(Int32 n1, Int32 n2)
+    {
+        return n1 - n2;
+    }
+    // Метод обратного вызова, принимающий один аргумент типа String
+    private static Object NumChars(String s1)
+    {
+        return s1.Length;
+    }
+    // Метод обратного вызова, принимающий один аргумент типа String
+    private static Object Reverse(String s1)
+    {
+        return new String(s1.Reverse().ToArray());
     }
 }
