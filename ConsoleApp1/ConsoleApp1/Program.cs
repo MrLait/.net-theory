@@ -1,53 +1,55 @@
 ﻿using System;
 using System.Threading;
-
-internal sealed class AClass1
-{
-    public static void CallbackWithoutNewingADelegateObject()
-    {
-        ThreadPool.QueueUserWorkItem(SomeAsyncTask, 5);
-    }
-    private static void SomeAsyncTask(Object o)
-    {
-        Console.WriteLine(o);
-    }
-}
-internal sealed class AClass2
-{
-    public static void CallbackWithoutNewingADelegateObject()
-    {
-        ThreadPool.QueueUserWorkItem(obj => Console.WriteLine(obj), 5);
-    }
-}
-internal sealed class AClass3
-{
-    private static String sm_name; // Статическое поле
-    public static void CallbackWithoutNewingADelegateObject()
-    {
-        ThreadPool.QueueUserWorkItem(
-        // Код обратного вызова может обращаться к статическим членам
-        obj => Console.WriteLine(sm_name + ": " + obj),
-        5);
-    }
-}
 internal sealed class AClass
 {
-    private String m_name; // Поле экземпляра
-                           // Метод экземпляра
-    public void CallbackWithoutNewingADelegateObject()
+    public static void UsingLocalVariablesInTheCallbackCode(Int32 numToDo)
     {
-        ThreadPool.QueueUserWorkItem(
-        // Код обратного вызова может ссылаться на члены экземпляра
-        obj => Console.WriteLine(m_name + ": " + obj),
-        5);
+        // Локальные переменные
+        Int32[] squares = new Int32[numToDo];
+        AutoResetEvent done = new AutoResetEvent(false);
+        // Выполнение задач в других потоках
+        for (Int32 n = 0; n < squares.Length; n++)
+        {
+            ThreadPool.QueueUserWorkItem(
+            obj =>
+            {
+                Int32 num = (Int32)obj;
+                // Обычно решение этой задачи требует больше времени
+                squares[num] = num * num;
+                // Если это последняя задача, продолжаем выполнять главный поток
+                if (Interlocked.Decrement(ref numToDo) == 0)
+                    done.Set();
+            },
+            n);
+        }
+        // Ожидаем завершения остальных потоков
+        done.WaitOne();
+        // Вывод результатов
+        for (Int32 n = 0; n < squares.Length; n++)
+            Console.WriteLine("Index {0}, Square={1}", n, squares[n]);
     }
 }
+
 public sealed class Program
 {
     //определение делегата
     delegate void Bar(out Int32 z);
     public static void Main()
     {
+        AClass.UsingLocalVariablesInTheCallbackCode(4);
+        Console.ReadKey();
+
+        // Создание и инициализация массива String
+        String[] names = { "Jeff", "Kristin", "Aidan", "Grant" };
+        // Извлечение имен со строчной буквой 'a'
+        Char charToFind = 'a';
+        names = Array.FindAll(names, name => name.IndexOf(charToFind) >= 0);
+        // Преобразование всех символов строки в верхний регистр
+        names = Array.ConvertAll(names, name => name.ToUpper());
+        // Вывод результатов
+        Array.ForEach(names, Console.WriteLine);
+
+
         // Если делегат не содержит аргументов, используйте круглые скобки
         Func<String> f = () => "Jeff";
         // Для делегатов с одним и более аргументами
@@ -63,7 +65,8 @@ public sealed class Program
         // Для аргументов ref/out нужно в явном виде указывать ref/out и тип
         Bar b = (out Int32 n) => n = 5;
 
-        Func<Int32, Int32, String> f7 = (n1, n2) => {
+        Func<Int32, Int32, String> f7 = (n1, n2) =>
+        {
             Int32 sum = n1 + n2; return sum.ToString();
         };
     }
