@@ -1,74 +1,105 @@
 ﻿using System;
-using System.Threading;
-internal sealed class AClass
+using System.Reflection;
+using System.IO;
+using System.Linq;
+// Несколько разных определений делегатов
+internal delegate Object TwoInt32s(Int32 n1, Int32 n2);
+internal delegate Object OneString(String s1);
+public static class DelegateReflection
 {
-    public static void UsingLocalVariablesInTheCallbackCode(Int32 numToDo)
+    public static void Main(String[] args)
     {
-        // Локальные переменные
-        Int32[] squares = new Int32[numToDo];
-        AutoResetEvent done = new AutoResetEvent(false);
-        // Выполнение задач в других потоках
-        for (Int32 n = 0; n < squares.Length; n++)
+        if (args.Length < 2)
         {
-            ThreadPool.QueueUserWorkItem(
-            obj =>
-            {
-                Int32 num = (Int32)obj;
-                // Обычно решение этой задачи требует больше времени
-                squares[num] = num * num;
-                // Если это последняя задача, продолжаем выполнять главный поток
-                if (Interlocked.Decrement(ref numToDo) == 0)
-                    done.Set();
-            },
-            n);
+            String usage =
+            @"Usage:" +
+            "{0} delType methodName [Arg1] [Arg2]" +
+            "{0} where delType must be TwoInt32s or OneString" +
+            "{0} if delType is TwoInt32s, methodName must be Add or Subtract" +
+            "{0} if delType is OneString, methodName must be NumChars or Reverse"
+           +
+            "{0}" +
+            "{0}Examples:" +
+            "{0} TwoInt32s Add 123 321" +
+            "{0} TwoInt32s Subtract 123 321" +
+            "{0} OneString NumChars \"Hello there\"" +
+            "{0} OneString Reverse \"Hello there\"";
+            Console.WriteLine(usage, Environment.NewLine);
+            return;
         }
-        // Ожидаем завершения остальных потоков
-        done.WaitOne();
-        // Вывод результатов
-        for (Int32 n = 0; n < squares.Length; n++)
-            Console.WriteLine("Index {0}, Square={1}", n, squares[n]);
-    }
-}
 
-public sealed class Program
-{
-    //определение делегата
-    delegate void Bar(out Int32 z);
-    public static void Main()
-    {
-        AClass.UsingLocalVariablesInTheCallbackCode(4);
-        Console.ReadKey();
-
-        // Создание и инициализация массива String
-        String[] names = { "Jeff", "Kristin", "Aidan", "Grant" };
-        // Извлечение имен со строчной буквой 'a'
-        Char charToFind = 'a';
-        names = Array.FindAll(names, name => name.IndexOf(charToFind) >= 0);
-        // Преобразование всех символов строки в верхний регистр
-        names = Array.ConvertAll(names, name => name.ToUpper());
-        // Вывод результатов
-        Array.ForEach(names, Console.WriteLine);
-
-
-        // Если делегат не содержит аргументов, используйте круглые скобки
-        Func<String> f = () => "Jeff";
-        // Для делегатов с одним и более аргументами
-        // можно в явном виде указать типы
-        Func<Int32, String> f2 = (Int32 n) => n.ToString();
-        Func<Int32, Int32, String> f3 = (Int32 n1, Int32 n2) => (n1 + n2).ToString();
-        // Компилятор может самостоятельно определить типы для делегатов
-        // с одним и более аргументами
-        Func<Int32, String> f4 = (n) => n.ToString();
-        Func<Int32, Int32, String> f5 = (n1, n2) => (n1 + n2).ToString();
-        // Если аргумент у делегата всего один, круглые скобки можно опустить
-        Func<Int32, String> f6 = n => n.ToString();
-        // Для аргументов ref/out нужно в явном виде указывать ref/out и тип
-        Bar b = (out Int32 n) => n = 5;
-
-        Func<Int32, Int32, String> f7 = (n1, n2) =>
+        // Преобразование аргумента delType в тип делегата
+        Type delType = Type.GetType(args[0]);
+        if (delType == null)
         {
-            Int32 sum = n1 + n2; return sum.ToString();
-        };
+            Console.WriteLine("Invalid delType argument: " + args[0]);
+            return;
+        }
+        Delegate d;
+        try
+        {
+            // Преобразование аргумента Arg1 в метод
+            MethodInfo mi =
+            typeof(DelegateReflection).GetTypeInfo().GetDeclaredMethod(args[1]);
+            // Создание делегата, служащего оберткой статического метода
+            d = mi.CreateDelegate(delType);
+        }
+        catch (ArgumentException)
+        {
+            Console.WriteLine("Invalid methodName argument: " + args[1]);
+            return;
+        }
+        // Создание массива, содержащего аргументы,
+        // передаваемые методу через делегат
+        Object[] callbackArgs = new Object[args.Length - 2];
+        if (d.GetType() == typeof(TwoInt32s))
+        {
+            try
+            {
+                // Преобразование аргументов типа String в тип Int32
+                for (Int32 a = 2; a < args.Length; a++)
+                    callbackArgs[a - 2] = Int32.Parse(args[a]);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Parameters must be integers.");
+                return;
+            }
+        }
+        if (d.GetType() == typeof(OneString))
+        {
+            // Простое копирование аргумента типа String
+            Array.Copy(args, 2, callbackArgs, 0, callbackArgs.Length);
+        }
+        try
+        {
+            // Вызов делегата и вывод результата
+            Object result = d.DynamicInvoke(callbackArgs);
+            Console.WriteLine("Result = " + result);
+        }
+        catch (TargetParameterCountException)
+        {
+            Console.WriteLine("Incorrect number of parameters specified.");
+        }
     }
-
+    // Метод обратного вызова, принимающий два аргумента типа Int32
+    private static Object Add(Int32 n1, Int32 n2)
+    {
+        return n1 + n2;
+    }
+    // Метод обратного вызова, принимающий два аргумента типа Int32
+    private static Object Subtract(Int32 n1, Int32 n2)
+    {
+        return n1 - n2;
+    }
+    // Метод обратного вызова, принимающий один аргумент типа String
+    private static Object NumChars(String s1)
+    {
+        return s1.Length;
+    }
+    // Метод обратного вызова, принимающий один аргумент типа String
+    private static Object Reverse(String s1)
+    {
+        return new String(s1.Reverse().ToArray());
+    }
 }
