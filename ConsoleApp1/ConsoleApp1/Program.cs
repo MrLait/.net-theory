@@ -1,64 +1,41 @@
 ﻿using System;
-internal struct Point
-{
-    private Int32 m_x, m_y;
-    public Point(Int32 x, Int32 y) { m_x = x; m_y = y; }
-    public static Boolean operator ==(Point p1, Point p2)
-    {
-        return (p1.m_x == p2.m_x) && (p1.m_y == p2.m_y);
-    }
-    public static Boolean operator !=(Point p1, Point p2)
-    {
-        return !(p1 == p2);
-    }
-}
 
 public sealed class Program
 {
     public static void Main()
     {
-        Point? p1 = new Point(1, 1);
-        Point? p2 = new Point(2, 2);
-        Console.WriteLine("Are points equal? " + (p1 == p2).ToString());
-        Console.WriteLine("Are points not equal? " + (p1 != p2).ToString());
-        Console.ReadKey();
+        NullCoalescingOperator();
+        Func<String> f = () => SomeMethod() ?? "Untitled";
+        //тоже самое но не так куто
+        Func<String> f = () => {
+            var temp = SomeMethod();
+            return temp != null ? temp : "Untitled";
+        };
 
-        Int32? x = 5;
-        Int32? y = null;
-        Console.WriteLine("x: HasValue={0}, Value={1}", x.HasValue, x.Value);
-        Console.WriteLine("y: HasValue={0}, Value={1}", y.HasValue, y.GetValueOrDefault());
-        //Exception
-        Console.WriteLine("y: HasValue={0}, Value={1}", y.HasValue, y.Value);
-    }
-    private static void ConversionsAndCasting()
-    {
-        // Неявное преобразование из типа Int32 в Nullable<Int32>
-        Int32? x = 5;
-        // Неявное преобразование из 'null' в Nullable<Int32>
-        Int32? b = null;
-        // Явное преобразование Nullable<Int32> в Int32
-        Int32 c = (Int32)b;
-        // Прямое и обратное приведение примитивного типа
-        // в null-совместимый тип
-        Double? d = 5; // Int32->Double? (d содержит 5.0 в виде double)
-        Double? e = b; // Int32?->Double? (e содержит null)
-    }
-    private static void Operators()
-    {
-        Int32? a = 5;
-        Int32? b = null;
-        // Унарные операторы (+ ++ - -- ! ~)
-        a++; // a = 6
-        b = -b; // b = null
-                // Бинарные операторы (+ - * / % & | ^ << >>)
-        a = a + 3; // a = 9
-        b = b * 3; // b = null;
-        // Операторы равенства (== !=)
-        if (a == null) { /* нет */ } else { /* да */ }
-        if (b == null) { /* да */ } else { /* нет */ }
-        if (a != b) { /* да */ } else { /* нет */ }
-        // Операторы сравнения (<> <= >=)
-        if (a < b) { /* нет */ } else { /* да */ }
+        String s = SomeMethod1() ?? SomeMethod2() ?? "Untitled";
+        //тоже самое но не так куто
+        String s;
+        var sm1 = SomeMethod1();
+        if (sm1 != null) s = sm1;
+        else
+        {
+            var sm2 = SomeMethod2();
+            if (sm2 != null) s = sm2;
+            else s = "Untitled";
+        }
 
+    }
+    private static void NullCoalescingOperator()
+    {
+        Int32? b = 5;
+        // Приведенная далее инструкция эквивалентна следующей:
+        // x = (b.HasValue) ? b.Value : 123
+        Int32 x = b ?? 123;
+        Console.WriteLine(x);
+
+        // Приведенная далее в инструкции строка эквивалентна следующему коду:
+        // String temp = GetFilename();
+        // filename = (temp != null) ? temp : "Untitled";
+        //String filename = GetFilename() ?? "Untitled";
     }
 }
