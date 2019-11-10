@@ -3,10 +3,60 @@ using System.IO;
 
 public sealed class Program
 {
-    public static void Main()
+    static void Main(string[] args)
     {
+        int x = 10;
+
+        int z;
+
+        Sum(x, 15, out z);
+
+        Console.WriteLine(z);
+
+        Console.ReadKey();
     }
+    static void Sum(int x, int y, out int a)
+    {
+        Console.WriteLine(x + y);
+    }
+
     private void SomeMethod()
+    {
+        try { /*...*/ }
+        catch (Exception e)
+        {
+            //...
+            throw; // CLR не меняет информацию о начальной точке исключения.
+                   // FxCop НЕ сообщает об ошибке
+        }
+    }
+
+    private void SomeMethod2()
+    {
+        try { /*...*/ }
+        catch (Exception e)
+        {
+            //...
+            throw e; // CLR считает, что исключение возникло тут
+                     // FxCop сообщает об ошибке
+        }
+    }
+
+    private void SomeMethod3()
+    {
+        Boolean trySucceeds = false;
+        try
+        {
+            //...
+            trySucceeds = true;
+        }
+        finally
+        {
+            if (!trySucceeds) { /* код перехвата исключения */ }
+        }
+    }
+
+    private void SomeMethod4()
     {
         try
         {
