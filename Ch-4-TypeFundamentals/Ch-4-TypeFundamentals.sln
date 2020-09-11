@@ -1,0 +1,108 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AAD36CCF-9FD1-45EB-8C18-9F7D6707272E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C58384CE-F995-4EA3-925C-A21AF731BDF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCDAlgorithm", "src\GCDAlgorithm\GCDAlgorithm.csproj", "{D24325F9-BA0A-40AC-81B9-C1315031FA36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task01.1", "task01.1", "{75CD832E-3992-4F8C-8D11-775CAE350882}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task01.2", "task01.2", "{D41888AF-B8A2-47BF-BAF4-9116789057FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.Domain", "src\Shapes.Domain\Shapes.Domain.csproj", "{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCDAlgorithmTests", "tests\GCDAlgorithmTests\GCDAlgorithmTests.csproj", "{5242C821-2A97-4DA6-9F2E-088C4325E393}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fileData", "fileData", "{8B438FD0-749E-4B2A-BE98-6F59F65CF09C}"
+	ProjectSection(SolutionItems) = preProject
+		fileData\correctFigures.txt = fileData\correctFigures.txt
+		fileData\differentText.txt = fileData\differentText.txt
+		fileData\figureWithEmptyName.txt = fileData\figureWithEmptyName.txt
+		fileData\figureWithEmptyParameter.txt = fileData\figureWithEmptyParameter.txt
+		fileData\figureWithStringParameter.txt = fileData\figureWithStringParameter.txt
+		fileData\threeDifferentShape.txt = fileData\threeDifferentShape.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.Services", "src\Shapes.Services\Shapes.Services.csproj", "{B3C01F0B-3894-4A5D-904B-36F7FAF828CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.DomainTests", "tests\Shapes.DomainTests\Shapes.DomainTests.csproj", "{AAE3DCAE-2E22-4793-9780-21334DA4D863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.DataTests", "tests\Shapes.DataTests\Shapes.DataTests.csproj", "{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.ServicesTests", "tests\Shapes.ServicesTests\Shapes.ServicesTests.csproj", "{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes.Data", "src\Shapes.Data\Shapes.Data.csproj", "{E878FF21-8E02-45AF-B516-A6D2D69355BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xmlDocuments", "xmlDocuments", "{F19AF6C3-4042-47AF-98D7-B2F86EE6F7BB}"
+	ProjectSection(SolutionItems) = preProject
+		xmlDocuments\GCDAlgorithmTests.xml = xmlDocuments\GCDAlgorithmTests.xml
+		xmlDocuments\Shapes.Data.xml = xmlDocuments\Shapes.Data.xml
+		xmlDocuments\Shapes.DataTests.xml = xmlDocuments\Shapes.DataTests.xml
+		xmlDocuments\Shapes.Domain.xml = xmlDocuments\Shapes.Domain.xml
+		xmlDocuments\Shapes.DomainTests.xml = xmlDocuments\Shapes.DomainTests.xml
+		xmlDocuments\Shapes.Services.xml = xmlDocuments\Shapes.Services.xml
+		xmlDocuments\Shapes.ServicesTests.xml = xmlDocuments\Shapes.ServicesTests.xml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D24325F9-BA0A-40AC-81B9-C1315031FA36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24325F9-BA0A-40AC-81B9-C1315031FA36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24325F9-BA0A-40AC-81B9-C1315031FA36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24325F9-BA0A-40AC-81B9-C1315031FA36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5242C821-2A97-4DA6-9F2E-088C4325E393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5242C821-2A97-4DA6-9F2E-088C4325E393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5242C821-2A97-4DA6-9F2E-088C4325E393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5242C821-2A97-4DA6-9F2E-088C4325E393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C01F0B-3894-4A5D-904B-36F7FAF828CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C01F0B-3894-4A5D-904B-36F7FAF828CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C01F0B-3894-4A5D-904B-36F7FAF828CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C01F0B-3894-4A5D-904B-36F7FAF828CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE3DCAE-2E22-4793-9780-21334DA4D863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE3DCAE-2E22-4793-9780-21334DA4D863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE3DCAE-2E22-4793-9780-21334DA4D863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE3DCAE-2E22-4793-9780-21334DA4D863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E878FF21-8E02-45AF-B516-A6D2D69355BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E878FF21-8E02-45AF-B516-A6D2D69355BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E878FF21-8E02-45AF-B516-A6D2D69355BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E878FF21-8E02-45AF-B516-A6D2D69355BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D24325F9-BA0A-40AC-81B9-C1315031FA36} = {75CD832E-3992-4F8C-8D11-775CAE350882}
+		{75CD832E-3992-4F8C-8D11-775CAE350882} = {C58384CE-F995-4EA3-925C-A21AF731BDF3}
+		{D41888AF-B8A2-47BF-BAF4-9116789057FE} = {C58384CE-F995-4EA3-925C-A21AF731BDF3}
+		{61BE5E9B-DF9D-47AF-BFCA-00927E1271E6} = {D41888AF-B8A2-47BF-BAF4-9116789057FE}
+		{5242C821-2A97-4DA6-9F2E-088C4325E393} = {AAD36CCF-9FD1-45EB-8C18-9F7D6707272E}
+		{B3C01F0B-3894-4A5D-904B-36F7FAF828CF} = {D41888AF-B8A2-47BF-BAF4-9116789057FE}
+		{AAE3DCAE-2E22-4793-9780-21334DA4D863} = {AAD36CCF-9FD1-45EB-8C18-9F7D6707272E}
+		{D2A19C8C-6463-4ACF-A31F-3E85E5DEAF2C} = {AAD36CCF-9FD1-45EB-8C18-9F7D6707272E}
+		{CEE0B19A-8906-49B9-B4BB-16E8D4CD45C0} = {AAD36CCF-9FD1-45EB-8C18-9F7D6707272E}
+		{E878FF21-8E02-45AF-B516-A6D2D69355BA} = {D41888AF-B8A2-47BF-BAF4-9116789057FE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E83C1FB-42FB-4EB0-9899-758624C42C31}
+	EndGlobalSection
+EndGlobal
