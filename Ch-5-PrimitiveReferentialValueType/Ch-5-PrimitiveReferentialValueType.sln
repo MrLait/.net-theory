@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AAD36CCF-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C58384CE-F995-4EA3-925C-A21AF731BDF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch-4-TypeFundamentals", "src\Ch-4-TypeFundamentals\Ch-4-TypeFundamentals.csproj", "{66373509-C275-4155-8D95-49A9A2A373F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch-5-PrimitiveReferentialValueType", "src\Ch-5-PrimitiveReferentialValueType\Ch-5-PrimitiveReferentialValueType.csproj", "{66373509-C275-4155-8D95-49A9A2A373F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
