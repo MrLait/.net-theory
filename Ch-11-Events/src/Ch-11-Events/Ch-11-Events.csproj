@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventSet.cs" />
     <Compile Include="Fax.cs" />
+    <Compile Include="FooEventArgs.cs" />
     <Compile Include="MailManager.cs" />
     <Compile Include="NewMailEventArgs.cs" />
     <Compile Include="Pager.cs" />
