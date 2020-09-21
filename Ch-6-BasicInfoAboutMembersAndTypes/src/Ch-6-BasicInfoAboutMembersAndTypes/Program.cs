@@ -29,6 +29,45 @@ namespace Ch_6_BasicInfoAboutMembersAndTypes
         }
 
     }
+
+    public class ClassWithAllTypes
+    {
+        //Const
+        const int constInt = 10;
+        const SomeType someType = null;
+
+        //Field
+        static int staticField = 10;
+        int instanceField = 10;
+        readonly int readonlyField = 10;
+
+        //ctor
+        public ClassWithAllTypes() { }
+        static ClassWithAllTypes() { }
+
+        //Property
+        public int IntProperty { get; set; }
+        public static int IntStaticProperty { get; set; }
+        public virtual int IntVirtualProperty { get; set; }
+
+        //Indexator
+        public Int32 this[String s] { get { return 0; } set { } }
+        public virtual Int32 this[int s] { get { return 0; } set { } }
+
+        //event
+        public event EventHandler SomeEvent;
+        public static event EventHandler SomeStaticEvent;
+        public virtual event EventHandler SomeVirtualEvent;
+
+        //Methods
+        public void InstanceVoidM(){}
+        public int InstanceM(){ return 0; }
+        public virtual int VirtualM(){ return 0; }
+        public static int StaticM() { return 0; }
+
+    }
+
+
     public sealed class SomeType                                // 1
     {
         // Вложенный класс
