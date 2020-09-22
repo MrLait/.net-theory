@@ -82,6 +82,12 @@
     <Compile Include="4.InterfaceSegregationPrinciple\GoodPractice\IPhoneExample\Models\Camera.cs" />
     <Compile Include="4.InterfaceSegregationPrinciple\GoodPractice\IPhoneExample\Models\Phone.cs" />
     <Compile Include="4.InterfaceSegregationPrinciple\GoodPractice\IPhoneExample\Models\Photograph.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\BadPractice\Models\Book.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\BadPractice\Models\ConsolePrinter.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\GoodPractice\Interfaces\IPrinter.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\GoodPractice\Models\Book.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\GoodPractice\Models\ConsolePrinter.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\GoodPractice\Models\HtmlPrinter.cs" />
     <Compile Include="RelationshipsBetweenClassesObjects\AssociationBetweenClasses.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

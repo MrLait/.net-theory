@@ -5,7 +5,7 @@ using System;
 using PatternStrategy = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternStrategy;
 using PatternTemplateMethod = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternTemplateMethod;
 using BadPractice = SOLID._3.LiskovSubstitutionPrinciple.BadPractice;
-
+using SOLID._5.DependencyInversionPrinciple.GoodPractice.Models;
 
 namespace SOLID
 {
@@ -89,6 +89,14 @@ namespace SOLID
             decimal sum = acc.GetInterest(1000, 1, 10); // 1000 + 1000 * 10 / 100 + 100 (бонус)
             if (sum != 1200) // ожидаем 1200
                 Console.WriteLine("Неожиданная сумма при вычислениях");
+        }
+
+        static void DependencyInversionPrinciple()
+        {
+            Book book = new Book(new _5.DependencyInversionPrinciple.GoodPractice.Models.ConsolePrinter());
+            book.Print();
+            book.Printer = new HtmlPrinter();
+            book.Print();
         }
     }
 }
