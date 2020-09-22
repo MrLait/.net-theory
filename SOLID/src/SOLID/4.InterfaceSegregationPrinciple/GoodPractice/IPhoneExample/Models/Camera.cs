@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SOLID._4.InterfaceSegregationPrinciple.GoodPractice.IPhoneExample.Interfaces;
+using System;
 
 namespace SOLID._4.InterfaceSegregationPrinciple.GoodPractice.IPhoneExample.Models
 {

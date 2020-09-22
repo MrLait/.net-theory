@@ -1,4 +1,4 @@
-﻿namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces
+﻿namespace SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces
 {
     interface IPhoneReader
     {

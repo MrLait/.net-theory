@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\Phone.cs" />
     <Compile Include="2.OpenClosedPrinciple\BadPratice\Cook.cs" />
     <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Cook.cs" />
     <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Interfaces\IMeal.cs" />
@@ -101,12 +102,11 @@
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneReader.cs" />
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneSaver.cs" />
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneValidator.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\MobileStore.cs" />
-    <Compile Include="2.OpenClosedPrinciple\Phone.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\ConsolePhoneReader.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\GeneralPhoneBinder.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\GeneralPhoneValidator.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\TextPhoneSaver.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\MobileStore.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\ConsolePhoneReader.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneBinder.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneValidator.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\TextPhoneSaver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
