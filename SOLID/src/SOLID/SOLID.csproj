@@ -44,9 +44,26 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\GroupedByMethod\BadPratice\Report.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\GroupedByMethod\GoodPractice\ConsolePrinter.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\GroupedByMethod\GoodPractice\IPrinter.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\GroupedByMethod\GoodPractice\Report.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\BadPractice\MobileStore.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\BadPractice\Phone.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneBinder.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneReader.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneSaver.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneValidator.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\MobileStore.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Phone.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\ConsolePhoneReader.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneBinder.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneValidator.cs" />
+    <Compile Include="SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\TextPhoneSaver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
