@@ -1,8 +1,8 @@
-﻿using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice;
-using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
-using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models;
+﻿using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
+using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models;
+using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Services;
 
-namespace SOLID
+namespace SOLID.RelationshipsBetweenClassesObjects
 {
     class AssociationBetweenClasses /*: IMethod*/
     {

@@ -1,4 +1,4 @@
-﻿namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice
+﻿namespace SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models
 {
     class Phone
     {

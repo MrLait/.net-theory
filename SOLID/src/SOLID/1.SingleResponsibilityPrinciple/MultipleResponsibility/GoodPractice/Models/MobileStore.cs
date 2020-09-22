@@ -1,8 +1,8 @@
-﻿using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
+﻿using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice
+namespace SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models
 {
     class MobileStore
     {

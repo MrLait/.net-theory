@@ -1,11 +1,12 @@
-﻿using SOLID.SingleResponsibilityPrinciple.GoodPractice;
-using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice;
-using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models;
-using System;
+﻿using System;
 using PatternStrategy = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternStrategy;
 using PatternTemplateMethod = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternTemplateMethod;
 using BadPractice = SOLID._3.LiskovSubstitutionPrinciple.BadPractice;
+
 using SOLID._5.DependencyInversionPrinciple.GoodPractice.Models;
+using SOLID._1.SingleResponsibilityPrinciple.GroupedByMethod.GoodPractice;
+using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models;
+using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Services;
 
 namespace SOLID
 {
@@ -24,7 +25,7 @@ namespace SOLID
 
         static void SingleResponsibilityOne()
         {
-            IPrinter printer = new ConsolePrinter();
+            IPrinter printer = new _1.SingleResponsibilityPrinciple.GroupedByMethod.GoodPractice.ConsolePrinter();
             Report report = new Report();
             report.Text = "Hello Wolrd";
             report.Print(printer);
