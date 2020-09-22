@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.BadPractice
+namespace SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.BadPractice
 {
     class MobileStore
     {

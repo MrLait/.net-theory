@@ -1,7 +1,7 @@
-﻿using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
+﻿using SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
 using System;
 
-namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models
+namespace SOLID._1.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Services
 {
     class ConsolePhoneReader : IPhoneReader
     {
