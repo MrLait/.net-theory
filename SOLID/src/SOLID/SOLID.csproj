@@ -43,10 +43,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="2.OpenClosedPrinciple\BadPratice\Cook.cs" />
-    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatterStrategy\Cook.cs" />
-    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatterStrategy\Interfaces\IMeal.cs" />
-    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatterStrategy\Services\PotatoMeal.cs" />
-    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatterStrategy\Services\SaladMeal.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Cook.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Interfaces\IMeal.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Models\PotatoMeal.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternStrategy\Models\SaladMeal.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternTemplateMethod\Cook.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternTemplateMethod\Models\AbstractMealBase.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternTemplateMethod\Models\PotatoMeal.cs" />
+    <Compile Include="2.OpenClosedPrinciple\GoodPractice\PatternTemplateMethod\Models\SaladMeal.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Invariants\Account.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Invariants\MicroAccount.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Postconditions\Account.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Postconditions\MicroAccount.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Preconditions\Account.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Preconditions\MicroAccount.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Rectangle.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\BadPractice\Square.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\GoodPractice\Invariants\User.cs" />
     <Compile Include="RelationshipsBetweenClassesObjects\AssociationBetweenClasses.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,11 +74,11 @@
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneSaver.cs" />
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Interfaces\IPhoneValidator.cs" />
     <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\MobileStore.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Phone.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\ConsolePhoneReader.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneBinder.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\GeneralPhoneValidator.cs" />
-    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Services\TextPhoneSaver.cs" />
+    <Compile Include="2.OpenClosedPrinciple\Phone.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\ConsolePhoneReader.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\GeneralPhoneBinder.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\GeneralPhoneValidator.cs" />
+    <Compile Include="1.SingleResponsibilityPrinciple\MultipleResponsibility\GoodPractice\Models\TextPhoneSaver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

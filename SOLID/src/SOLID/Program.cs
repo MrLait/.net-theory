@@ -4,6 +4,8 @@ using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Mo
 using System;
 using PatternStrategy = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternStrategy;
 using PatternTemplateMethod = SOLID._2.OpenClosedPrinciple.GoodPractice.PatternTemplateMethod;
+using BadPractice = SOLID._3.LiskovSubstitutionPrinciple.BadPractice;
+
 
 namespace SOLID
 {
@@ -15,6 +17,9 @@ namespace SOLID
             SingleResponsibilityTwo();
             OpenClosedPrinciplePatternStrategy();
             OpenClosedPrinciplePatternTemplatesMethod();
+            LiskovSubstitutionPrincipleBadPractice();
+            //LiskovSubstitutionPrincipleBadPracticePrecoonditions();
+            LiskovSubstitutionPrincipleBadPracticePostconditions();
         }
 
         static void SingleResponsibilityOne()
@@ -54,5 +59,36 @@ namespace SOLID
             bob.MakeDinner(menu);
         }
 
+        static void LiskovSubstitutionPrincipleBadPractice()
+        {
+            BadPractice.Rectangle rect = new BadPractice.Square();
+
+            rect.Height = 5;
+            rect.Width = 10;
+            if (rect.GetArea() != 50)
+                Console.WriteLine("Некорректная площадь!");
+        }
+
+        /*С точки зрения класса Account метод InitializeAccount() вполне является работоспособным. 
+         * Однако при передаче в него объекта MicroAccount мы столкнемся с ошибкой. 
+         * В итоге пинцип Лисков будет нарушен.*/
+        static void LiskovSubstitutionPrincipleBadPracticePrecoonditions()
+        {
+            BadPractice.Preconditions.Account acc = new BadPractice.Preconditions.MicroAccount();
+            acc.SetCapital(200);
+            Console.WriteLine(acc.Capital);
+        }
+
+        /*Исходя из логики класса Account, в методе CalculateInterest мы ожидаем получить в качестве результата числа 1200. 
+         * Однако логика класса MicroAccount показывает другой результат. 
+         * В итоге мы приходим к нарушению принципа Лисков, 
+         * хотя формально мы просто применили стандартные принципы ООП - полиморфизм и наследование.*/
+        static void LiskovSubstitutionPrincipleBadPracticePostconditions()
+        {
+            BadPractice.Postconditions.Account acc = new BadPractice.Postconditions.MicroAccount();
+            decimal sum = acc.GetInterest(1000, 1, 10); // 1000 + 1000 * 10 / 100 + 100 (бонус)
+            if (sum != 1200) // ожидаем 1200
+                Console.WriteLine("Неожиданная сумма при вычислениях");
+        }
     }
 }
