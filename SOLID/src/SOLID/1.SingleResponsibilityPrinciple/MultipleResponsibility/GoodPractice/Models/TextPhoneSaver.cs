@@ -1,6 +1,6 @@
 ﻿using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
 
-namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Services
+namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models
 {
     class TextPhoneSaver : IPhoneSaver
     {
