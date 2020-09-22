@@ -1,7 +1,7 @@
 ﻿using SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Interfaces;
 using System;
 
-namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Services
+namespace SOLID.SingleResponsibilityPrinciple.MultipleResponsibility.GoodPractice.Models
 {
     class GeneralPhoneBinder : IPhoneBinder
     {
