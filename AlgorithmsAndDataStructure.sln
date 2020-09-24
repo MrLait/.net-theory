@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StortAlgorithmsTests", "Sto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedListTests", "tests\DataStructuresTests\LinkedListTests\LinkedListTests.csproj", "{CA3A86CC-1989-4B11-8720-CB2826087AD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoublyLinkedList", "src\DataStructures\DoublyLinkedList\DoublyLinkedList.csproj", "{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircularLinkedList", "src\DataStructures\CircularLinkedList\CircularLinkedList.csproj", "{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,14 @@ Global
 		{CA3A86CC-1989-4B11-8720-CB2826087AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA3A86CC-1989-4B11-8720-CB2826087AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA3A86CC-1989-4B11-8720-CB2826087AD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +75,8 @@ Global
 		{333F17A6-2B5D-402C-A129-D8C88A3F1FC8} = {46E8395D-E8E4-45AF-86C1-F387ABF64CBD}
 		{4DE44214-52CA-4A5F-84C6-6238F94A72E8} = {46E8395D-E8E4-45AF-86C1-F387ABF64CBD}
 		{CA3A86CC-1989-4B11-8720-CB2826087AD0} = {333F17A6-2B5D-402C-A129-D8C88A3F1FC8}
+		{CE13F5BC-267C-4F83-9E9B-5A5F8F473A2A} = {4F1CBD42-5254-422C-B10E-36DA8263E34C}
+		{AEDFFF9B-3733-4015-BA4F-F6AA9B37422C} = {4F1CBD42-5254-422C-B10E-36DA8263E34C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1031649-D0FE-410C-94BF-0EC69DED1197}
