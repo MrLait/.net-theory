@@ -9,7 +9,7 @@ namespace DataStructures.LinkedList
         private Node<T> tail;
         private int count;
 
-        public void Add(T data)
+        public void AddLast(T data)
         {
             Node<T> node = new Node<T>(data);
 
@@ -40,7 +40,7 @@ namespace DataStructures.LinkedList
             count++;
         }
 
-        public void AppendFirst(T data)
+        public void AddFirst(T data)
         {
             Node<T> node = new Node<T>(data);
             node.Next = head;
