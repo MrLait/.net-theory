@@ -1,0 +1,10 @@
+public virtual bool Equals(object ob);    
+public virtual string ToString();
+public virtual int GetHashCode();
+
+public Type GetType()
+protected Finalize() 
+protected object MemberwiseClone()    
+
+public static bool Equals(object objA, object objB)         
+public static bool ReferenceEquals(obj objA, object objB)
