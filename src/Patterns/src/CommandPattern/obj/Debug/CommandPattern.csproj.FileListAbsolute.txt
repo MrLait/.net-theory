@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\bin\Debug\CommandPattern.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\bin\Debug\CommandPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\bin\Debug\CommandPattern.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\obj\Debug\CommandPattern.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\obj\Debug\CommandPattern.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\obj\Debug\CommandPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\CommandPattern\obj\Debug\CommandPattern.pdb

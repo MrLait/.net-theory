@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\bin\Debug\VisitorPattern.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\bin\Debug\VisitorPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\bin\Debug\VisitorPattern.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\obj\Debug\VisitorPattern.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\obj\Debug\VisitorPattern.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\obj\Debug\VisitorPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\VisitorPattern\obj\Debug\VisitorPattern.pdb

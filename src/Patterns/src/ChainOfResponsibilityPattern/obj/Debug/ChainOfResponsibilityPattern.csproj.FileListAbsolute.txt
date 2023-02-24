@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\bin\Debug\ChainOfResponsibilityPattern.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\bin\Debug\ChainOfResponsibilityPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\bin\Debug\ChainOfResponsibilityPattern.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\obj\Debug\ChainOfResponsibilityPattern.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\obj\Debug\ChainOfResponsibilityPattern.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\obj\Debug\ChainOfResponsibilityPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\ChainOfResponsibilityPattern\obj\Debug\ChainOfResponsibilityPattern.pdb

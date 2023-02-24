@@ -1,0 +1,17 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\obj\Debug\TemplateMethod.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\obj\Debug\TemplateMethod.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\selenium-manager\linux\selenium-manager
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\selenium-manager\macos\selenium-manager
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\selenium-manager\windows\selenium-manager.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\TemplateMethod.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\TemplateMethod.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\TemplateMethod.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\WebDriver.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\System.Buffers.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\System.Memory.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\System.Numerics.Vectors.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\obj\Debug\TemplateMethod.csproj.CopyComplete
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\obj\Debug\TemplateMethod.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\TemplateMethod\obj\Debug\TemplateMethod.pdb

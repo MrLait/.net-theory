@@ -1,0 +1,164 @@
+What does “SQL” acronym stand for?
+With SQL you can create…
+An SQL query usually contains…
+What is the purpose of “m2m_books_authors” and “m2m_books_genres” tables?
+What is the minimal time unit we store for subscription start and end?
+To show all books along with their authors we use a query with…
+In most database management tools to execute just a part of some SQL code currently opened in the editor you have to…
+Can we fill a database with data using preliminarily prepared SQL queries?
+To ensure the data integrity we…   First create all constraints, then import data (otherwise some constraints may not prevent integrity failures).
+
+With SELECT queries we can select data from… Tables. Views.
+Can we use functions like SUM, MIN, MAX without GROUP BY? Yes.
+Can we use nested aggregate functions (e.g. AVG(AVG(x)))? no
+What is the main difference between INNER JOIN and OUTER JOIN? INNER JOIN looks for existing pairs of values, OUTER JOIN may produce “value-NULL” pairs.
+How can we simulate FULL OUTER JOIN in MySQL? With LEFT and RIGHT JOINs and UNION.
+How will a DBMS behave if we execute an UPDATE query without WHERE clause? It will update all table rows.
+How can we insert some data without duplication in MySQL?	Use REPLACE operator.
+How can we insert some data without duplication in MS SQL Server? Use MERGE operator.
+How can we insert some data without duplication in Oracle? Use MERGE operator.
+Can we simulate MERGE operator in MySQL? Can we simulate MERGE operator in MySQL?
+Can we choose which value to insert based on some condition right inside the INSERT query? Yes, with CASE clause for all DBMSes.
+
+ЗАМЕТКИ
+	Нельзя возвращать более одной колонки в where для сравнения 
+	В GROUP BY можно групировать только если в select одна колонка/+ агрегирующие, если их больше то нужно перечислить все в GROUP BY а,б,с
+	В MS SQL нельзя писать сразу два STRING_AGG, нужно разделять для каждого свой SELECT и потом объеденяь таблицы c помощью 
+WITH [table_name_first] AS(select1...), [table_name_second] AS (select2..) (select обединяющий запросы). Иногда если нужно 
+убрать дубликаты в двух STRING_AGG, нужно добавлять промежуточные запросы https://stackoverflow.com/questions/51646385/produce-distinct-values-in-string-agg
+	DISTINCT предписывает СУБД убрать из результирующей выборки все повторения и может быть применено только к первому полю
+	JOIN ON  позволяет объеденять таблицы связывая их по общему ключу
+	LEFT JOIN / RIGHT JOIN повзоляет выбрать совпадающие или не совпадающие данные, совпадающие данные будту равны null
+	Вместо join можно использовать IN/NOT IN, а именно WHERE 'внешнийКлючТаблицы1' in ( SELECT 'внешнийКлючТаблицы2' FROM subscriptions)
+Подзапрос IN работает чуть быстрее чем join
+	Подзапрос с IN можно использовать вызывая их в каждом SELECT выражении таким образом получим двойно/тройной IN, а так же можно
+использовать с JOIN-ами
+	Функция ISNULL, преобразующую NULL-значения в 0.
+	коррелирующий подзапрос это ? Общее табличное выражение?
+	ORDER BY нельзя использовать в WITH [prepeared_data] AS()
+	МЕДИАНА - PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY total_books) OVER() AS MEDIAN 
+	EXISTS - похоже возвращает 1/0 взависимости от true/false
+	LENGTH() - возвращает длинну строки в байтах, инт нужно преобразовать в varchar
+	В случае использования BETWEEN, границы включаются в диапазон искомых значений.
+	
+Классические представления не содержат в себе данных, они лишь являются способом обращения к реальным таблицам базы данных	
+	
+	
+Агрегирующая функция COUNT(*) AS [new_name], производит подсчёт записей, сгруппированных по совпадению значения поля, указанного в
+GROUP BY [count_name]
+
+	COUNT производительность и синтксисФункция COUNT может быть использована в следующих пяти форматах:
+• COUNT(*) — классический вариант, используемый для подсчёта количества записей;
+• COUNT(1) — альтернативная запись классического варианта;
+• COUNT(первичный_ключ) — альтернативная запись классического варианта;
+• COUNT(поле) — подсчёт записей, в указанном поле которых нет NULL значений;
+• COUNT(DISTINCT поле) — подсчёт без повторения записей, в указанном поле которых нет NULL-значений.
+
+Одним из самых частых вопросов относительно разных вариантов COUNT является вопрос о производительности: какой вариант работает быстрее?
+В базе данных «Исследование» создадим таблицу test_counts, содержащую такие поля:
+• id — автоинкрементируемый первичный ключ (число);
+• fni — поле без индекса («field, no index») (число или NULL);
+• fwi — поле с индексом («field, with index») (число или NULL);
+• fni_nn — поле без индекса и NULL’ов («field, no index, no nulls») (число);
+• fwi_nn — поле с индексом без NULL’ов («field, with index, no nulls») (число).
+
+общая рекомендация состоит в том, чтобы использовать COUNT(1) как в среднем один из самых быстрых вариантов для разных СУБД и 
+разных объёмов данных, т.к. остальные варианты иногда оказываются быстрее, но иногда и медленнее.
+
+SELECT COUNT(*) AS total_records FROM [table_with_nulls] посчитает все записи
+SELECT COUNT(1) AS total_records FROM [table_with_nulls] посчитает все записи
+SELECT COUNT([x]) AS total_records FROM [table_with_nulls] посчитает все записи, но без null
+SELECT COUNT(DISTINCT [x]) AS total_records FROM [table_with_nulls] посчитает записи без дублекатов, а так же без null
+
+	 использование функций SUM, MIN, MAX, AVG
+ MS SQL Server выбирает тип данных результата на основе типа данных входного параметра. 
+ к особенностям работы агрегирующих функций, рассмотрим их поведение в случае
+наличия в анализируемом поле NULL-значений, а также в случае пустого
+набора входных значений   Как легко заметить из полученных данных, ни одна из функций не учитывает NULL-значения.
+
+	упорядочивание выборки
+	Используем ORDER BY [name] ASC/DESC
+SELECT [b_name], [b_year] FROM [books] ORDER BY [b_year] ASC по возрастанию
+SELECT [b_name], [b_year] FROM [books] ORDER BY [b_year] DESC по убыванию
+Ещё одна неожиданная проблема с упорядочиванием связана с тем, где различные СУБД по умолчанию располагают  NULL-значения — в начале выборки или в конце.
+ MySQL и MS SQL Server DESC в конце, Oracle наоборот
+ 
+	использование составных условий
+Вариант 1: использование BETWEEN :				WHERE [b_year] BETWEEN 1990 and 2000 and [b_quantity] >=3
+Вариант 2: использование двойного неравенства:	WHERE [b_year] >= 1990 AND [b_year] <= 2000 AND [b_quantity] >= 3
+Но нельзя использовать BETWEEN, т.к в случае с извелечением месяца из даты и ее сравнение, то будет потеря производительности
+нужно использовать двойное неравенства WHERE [sb_start] >= '2012-06-01' AND [sb_start] < '2012-09-01'
+	
+	 поиск множества минимальных и максимальных значений
+: использование TOP
+использование ALL и подзапроса
+Коррелирующий подзапрос
+	
+	вычисление среднего значения агрегированных данных
+SELECT AVG(CAST([books_per_subscriber] AS FLOAT)) AS [avg_books]
+FROM (SELECT COUNT(DISTINCT [sb_book]) AS [books_per_subscriber]
+ FROM [subscriptions]
+ WHERE [sb_is_active] = 'Y'
+ GROUP BY [sb_subscriber]) AS [count_subquery]
+Суть решений 2.1.9.a{59} и 2.1.9.b{59} состоит в том, чтобы сначала подготовить
+агрегированные данные (подзапрос в строках 2-5 всех шести представленных выше
+запросов 2.1.9.a-2.1.9.b), а затем вычислить среднее значение от этих заранее подготовленных значений.
+
+DATEDIFF(year, '2011-01-01', '2012-01-01') - вычисления разницы в днях между двумя датами 
+GETDATE() сегодняшняя дата
+
+	использование группировки данных
+	SELECT YEAR([sb_start]) AS [year],
+ COUNT([sb_id]) AS [books_taken]
+FROM [subscriptions]
+GROUP BY YEAR([sb_start])
+ORDER BY [year]
+Обратите внимание на разницу в 4-й строке в запросах 2.1.10.a: MySQL позволяет в GROUP BY сослаться на имя только что вычисленного выражения, в то
+время как MS SQL Server и Oracle не позволяют этого сделать	
+Для быстрого понимания логики группировок можно использовать аналогию
+с объединением ячеек с одинаковыми значениями в таблице Word или Excel, после
+чего происходит анализ (чаще всего — подсчёт или суммирование) ячеек, соответствующих каждой такой «объединённой ячейке».
+	дублирование этого же кода в строках 8-12 вызвано тем, что эти СУБД
+не позволяют в GROUP BY сослаться на вычисленное выражение по его имени.
+	(CASE
+ WHEN "sb_is_active" = 'Y'
+ THEN 'Not returned'
+ ELSE 'Returned'
+ END) AS "status",
+
+		2.2. Выборка из нескольких таблиц
+	запросы на объединение как способ получения человекочитаемых данных
+FROM	[books] JOIN [m2m_books_authors]
+		ON [books].[b_id] = [m2m_books_authors].[b_id]
+		{результат первого действия} JOIN [authors]
+		ON [m2m_books_authors].[a_id] = [authors].[a_id]
+		
+		
+	запросы на объединение и преобразование столбцов в строки
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

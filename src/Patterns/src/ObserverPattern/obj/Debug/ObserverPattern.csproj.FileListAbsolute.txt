@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\bin\Debug\ObserverPattern.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\bin\Debug\ObserverPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\bin\Debug\ObserverPattern.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\obj\Debug\ObserverPattern.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\obj\Debug\ObserverPattern.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\obj\Debug\ObserverPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\ObserverPattern\obj\Debug\ObserverPattern.pdb

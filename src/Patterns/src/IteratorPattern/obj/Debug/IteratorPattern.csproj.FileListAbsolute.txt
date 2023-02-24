@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\bin\Debug\IteratorPattern.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\bin\Debug\IteratorPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\bin\Debug\IteratorPattern.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\obj\Debug\IteratorPattern.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\obj\Debug\IteratorPattern.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\obj\Debug\IteratorPattern.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\IteratorPattern\obj\Debug\IteratorPattern.pdb

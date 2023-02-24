@@ -1,0 +1,7 @@
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\bin\Debug\Mediator.exe.config
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\bin\Debug\Mediator.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\bin\Debug\Mediator.pdb
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\obj\Debug\Mediator.csproj.AssemblyReference.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\obj\Debug\Mediator.csproj.CoreCompileInputs.cache
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\obj\Debug\Mediator.exe
+E:\VS\GitHub\.net-theory\src\Patterns\src\Mediator\obj\Debug\Mediator.pdb
