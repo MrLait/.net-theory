@@ -9,8 +9,8 @@ namespace SOLID.RelationshipsBetweenClassesObjects
         //Ассоциация
         public Phone Phone { get; set; }
 
-        public IPhoneReader Reader { get; set; } // Для агрегации
-        public IPhoneBinder Binder { get; set; } //Для композиции
+        public IPhoneReader Reader; // Для агрегации
+        public IPhoneBinder Binder; //Для композиции
 
         public AssociationBetweenClasses(IPhoneReader reader)
         {

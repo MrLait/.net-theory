@@ -10,11 +10,11 @@ namespace Ch_4_TypeFundamentals
 Object.Это значит, что следующие определения типов идентичны: */
 
     // Тип, неявно производный от Object
-    internal class Employee {}
+    internal class Employee { }
     // Тип, явно производный от Object
     class EmployeeTwo : System.Object { }
 
-    internal class Manager : Employee {}
+    internal class Manager : Employee { }
 
     class Program
     {
@@ -68,7 +68,7 @@ Object.Это значит, что следующие определения т�
             }
         }
 
-        static void MainFour() 
+        static void MainFour()
         {
             object o = new object();
             Employee e = o as Employee;
@@ -80,7 +80,7 @@ Object.Это значит, что следующие определения т�
             e.ToString(); // Обращение к e вызывает исключение NullReferenceException
 
         }
-                
+
         private static void PromoteEmployee(object o)
         {
             // В этом месте компилятор не знает точно, на какой тип объекта
