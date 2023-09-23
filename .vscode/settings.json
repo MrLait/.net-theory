@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
+        "BIGSERIAL",
         "hotmail",
         "IFNULL",
         "MSSQL",
+        "SMALLSERIAL",
         "TIMESTAMPDIFF",
         "VARCHAR",
         "Многостолбцовые",
