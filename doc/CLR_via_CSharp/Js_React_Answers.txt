@@ -1,0 +1,16 @@
+# Перерисовка компонента
+Перерисовка компанента будет тогода когда меняется propps либо стэйт или просто передан объект, который не меняется(меняется ссылка)
+
+Перерисовка компонента обернутого в React.memo будет лишь в том случае если изменился хотябы одни из пропсов либо если в самом компаненте изменился стэйт. Но важно
+что у примитивных типов сравнение по значению а у обхектов по ссылке.
+
+useMemo ситоит использовать практичестки во всех случаях кода работаете с объектами, массивами, вычислениями, которые возвращают значение https://www.youtube.com/watch?v=zPrliWeyfkA&list=PL6DxKON1uLOHya4bDIynPTCwZHrezUlFs&index=16&ab_channel=UlbiTV
+при работе с примитивным типом данных usememo не нужен
+
+useCalback ситоит использовать если передаем функцию в дочерний компанент
+useRef может помчоь, чтобы не прокидывать в зависимости пропсы для useCalback, если работаем с useState https://www.youtube.com/watch?v=F8EvdTsl6hU&list=PL0FGkDGJQjJH4Uz-Vsk_91V65Wh88nlXC&index=5&ab_channel=ArchakovBlog
+
+useRequest хук для промисов  https://www.youtube.com/watch?v=ks8oftGP2oc&list=PL6DxKON1uLOHya4bDIynPTCwZHrezUlFs&index=2&ab_channel=UlbiTV
+useContext для передачи пропсов через компонент https://www.youtube.com/watch?v=9KJxaFHotqI&ab_channel=%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BB%D0%B5%D0%BD%D0%9C%D0%B8%D0%BD%D0%B8%D0%BD
+
+https://www.youtube.com/watch?v=S1uUQL66hHA&ab_channel=%D0%95%D0%BB%D0%B5%D0%BD%D0%B0%D0%9B%D0%B8%D1%82%D0%B2%D0%B8%D0%BD%D0%BE%D0%B2%D0%B0%E2%80%94%D0%98%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%BE%D0%92%D0%B5%D0%B1-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8
